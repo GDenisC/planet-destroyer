@@ -1,6 +1,5 @@
-import Entity from '../Entity';
-import Game from '../Game';
 import Planet from '../components/Planet';
+import Entity from '../Entity';
 import { UI, UIContext } from './UI';
 
 export default class PlanetUI implements UI {

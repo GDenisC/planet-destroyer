@@ -1,13 +1,13 @@
-import Entity from '../Entity';
-import Component from './Component';
-import { Order } from '../Order';
-import Collider from './Collider';
 import Application from '../../Application';
+import Collider from '../Collider';
+import Entity from '../Entity';
 import Game from '../Game';
-import Decoration, { DecorationType } from './Decoration';
+import { Order } from '../Order';
 import DecorationUI from '../ui/Decoration';
-import Rocket from './Rocket';
 import RocketUI from '../ui/Rocket';
+import Component from './Component';
+import Decoration, { DecorationType } from './Decoration';
+import Rocket from './Rocket';
 
 const layerColors = ['#ec9', '#ed9', '#de9', '#ce9'];
 

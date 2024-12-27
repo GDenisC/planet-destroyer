@@ -1,6 +1,6 @@
+import Decoration, { DecorationType } from '../components/Decoration';
 import Entity from '../Entity';
 import Game from '../Game';
-import Decoration, { DecorationType } from '../components/Decoration';
 import { UI, UIContext } from './UI';
 
 export default class DecorationUI implements UI {

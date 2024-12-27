@@ -1,9 +1,9 @@
 import Application from '../Application';
+import Decoration from './components/Decoration';
 import Explosion from './components/Explosion';
 import Planet from './components/Planet';
 import PlanetHit from './components/PlanetHit';
 import Rocket from './components/Rocket';
-import Decoration from './components/Decoration';
 
 export default class Game {
     public static readonly isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

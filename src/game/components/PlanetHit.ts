@@ -1,10 +1,10 @@
-import Component from './Component';
+import Collider from '../Collider';
 import Entity from '../Entity';
-import { Order } from '../Order';
-import Collider from './Collider';
 import Game from '../Game';
-import Explosion from './Explosion';
+import { Order } from '../Order';
 import ExplosionUI from '../ui/Explosion';
+import Component from './Component';
+import Explosion from './Explosion';
 
 export default class PlanetHit implements Component {
     public entity: Entity = null!;

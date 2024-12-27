@@ -1,10 +1,7 @@
 import Application from './Application';
 import Planet from './game/components/Planet';
-import PlanetUI from './game/ui/Planet';
-import Rocket from './game/components/Rocket';
-import RocketUI from './game/ui/Rocket';
-import Collider from './game/components/Collider';
 import Game from './game/Game';
+import PlanetUI from './game/ui/Planet';
 
 const app = new Application();
 

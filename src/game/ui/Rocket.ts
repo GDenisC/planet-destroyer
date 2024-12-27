@@ -1,6 +1,6 @@
+import Rocket from '../components/Rocket';
 import Entity from '../Entity';
 import Game from '../Game';
-import Rocket from '../components/Rocket';
 import { UI, UIContext } from './UI';
 
 export default class PocketUI implements UI {

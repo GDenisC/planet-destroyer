@@ -1,12 +1,11 @@
-import Component from './Component';
-import Entity from '../Entity';
-import { Order } from '../Order';
-import Planet from './Planet';
-import Collider from './Collider';
 import Application from '../../Application';
-import PlanetHit from './PlanetHit';
-import PlanetHitUI from '../ui/PlanetHit';
+import Collider from '../Collider';
+import Entity from '../Entity';
 import Game from '../Game';
+import { Order } from '../Order';
+import PlanetHitUI from '../ui/PlanetHit';
+import Component from './Component';
+import PlanetHit from './PlanetHit';
 
 const TAU = Math.PI * 2;
 
