@@ -82,15 +82,7 @@ export default class Planet implements Component {
         this.rocketTime += dt * time;
 
         if (this.rocketTime > this.rocketInterval) {
-            const angle = Math.random() * Math.PI * 2;
-
-            const rocket = new Rocket(
-                Math.cos(angle) * 1200,
-                Math.sin(angle) * 1200,
-                10, 80, 1
-            );
-
-            this.app.spawn({ base: rocket, ui: new RocketUI() });
+            Rocket.spawnOnOrbit(10, 80, 1);
             this.rocketTime = 0;
         }
 

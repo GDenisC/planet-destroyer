@@ -6,6 +6,7 @@ import { Order } from '../Order';
 import PlanetHitUI from '../ui/PlanetHit';
 import Component from './Component';
 import PlanetHit from './PlanetHit';
+import RocketUI from '../ui/Rocket';
 
 const TAU = Math.PI * 2;
 
@@ -87,5 +88,19 @@ export default class Rocket implements Component {
 
     private updateCollider() {
         this.collider.update({ x: this.x, y: this.y, radius: this.size / Game.instance!.planet.scale });
+    }
+
+    public static spawnOnOrbit(size: number, damage: number, speed: number) {
+        const angle = Math.random() * Math.PI * 2;
+
+        const rocket = new Rocket(
+            Math.cos(angle) * 1200,
+            Math.sin(angle) * 1200,
+            size, damage, speed
+        );
+
+        Game.instance!.app.spawn({ base: rocket, ui: new RocketUI() });
+
+        return rocket;
     }
 }
