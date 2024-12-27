@@ -11,8 +11,8 @@ export default class DecorationUI implements UI {
     }
 
     public render(ctx: CanvasRenderingContext2D, ui: UIContext) {
-        let scale = ui.winScale * Game.instance!.planet.scale,
-            size = this.decoration.size / scale;
+        let scale = ui.winScale / Game.instance!.planet.scale,
+            size = this.decoration.size * scale;
 
         ctx.translate(ui.x + this.decoration.x * ui.winScale, ui.y + this.decoration.y * ui.winScale);
         if (this.decoration.type == DecorationType.Tree) ctx.rotate(this.decoration.angle);
@@ -22,7 +22,7 @@ export default class DecorationUI implements UI {
         switch (this.decoration.type) {
             case DecorationType.Hill:
                 ctx.beginPath();
-                ctx.arc(0, 0, this.decoration.size / scale, 0, 2 * Math.PI);
+                ctx.arc(0, 0, this.decoration.size * scale, 0, 2 * Math.PI);
                 ctx.closePath();
                 ctx.fill();
                 break;
