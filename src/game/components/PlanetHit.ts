@@ -8,7 +8,7 @@ import ExplosionUI from '../ui/Explosion';
 
 export default class PlanetHit implements Component {
     public entity: Entity = null!;
-    public collider: Collider = null!;
+    public collider = new Collider();
 
     public constructor(
         public x: number,
@@ -16,11 +16,10 @@ export default class PlanetHit implements Component {
         public size: number
     ) {}
 
-    public init(entity: Entity<{ collider: Collider }>): void {
+    public init(entity: Entity): void {
         this.entity = entity;
         entity.zOrder = Order.PlanetHit;
         Game.instance!.hits.push(this);
-        this.collider = entity.getComponent('collider');
 
         const planet = Game.instance!.planet
         entity.app.spawn({ base: new Explosion(planet, this.x, this.y, this.size), ui: new ExplosionUI() })

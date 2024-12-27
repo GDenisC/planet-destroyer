@@ -1,20 +1,15 @@
-import Entity from '../Entity';
-import Component from './Component';
-
 interface Circle {
     x: number;
     y: number;
     radius: number;
 }
 
-export default class Collider implements Component {
+export default class Collider {
     private data: Circle | null = null;
 
     public update(data: Circle): void {
         this.data = data;
     }
-
-    public init(_entity: Entity): void {}
 
     public intersects(other: Collider, noRadius: boolean): boolean {
         if (!this.data || !other.data) return false;

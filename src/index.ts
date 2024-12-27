@@ -12,6 +12,6 @@ const planet = new Planet();
 
 new Game(app, planet);
 
-app.spawn({ collider: new Collider(), base: planet, ui: new PlanetUI() });
+app.spawn({ base: planet, ui: new PlanetUI() });
 
 app.run();

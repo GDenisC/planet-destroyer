@@ -27,13 +27,13 @@ export default class Planet implements Component {
     public rocketTime = 0;
     public rocketInterval = 1;
 
-    private collider: Collider = null!;
+    private collider = new Collider();
     private centerCollider = new Collider();
 
-    public init(entity: Entity<{ collider: Collider }>): void {
+    public init(entity: Entity): void {
         entity.zOrder = Order.Planet;
         this.app = entity.app;
-        this.collider = entity.getComponent('collider');
+
         this.updateColliders();
         this.spawnDecorations();
         this.makeLayers();
@@ -90,7 +90,7 @@ export default class Planet implements Component {
                 10, 80, 1
             );
 
-            this.app.spawn({ collider: new Collider(), base: rocket, ui: new RocketUI() });
+            this.app.spawn({ base: rocket, ui: new RocketUI() });
             this.rocketTime = 0;
         }
 

@@ -22,7 +22,7 @@ function angleLerp(a0: number,a1: number,t: number) {
 export default class Rocket implements Component {
     public entity: Entity = null!;
     public app: Application = null!;
-    public collider: Collider = null!;
+    public collider = new Collider();
     public angle: number;
     public fuel = 1;
 
@@ -37,10 +37,9 @@ export default class Rocket implements Component {
         Game.instance!.rockets.push(this);
     }
 
-    public init(entity: Entity<{ collider: Collider }>): void {
+    public init(entity: Entity): void {
         this.entity = entity;
         this.app = entity.app;
-        this.collider = entity.getComponent('collider');
         entity.zOrder = Order.Rocket;
     }
 
@@ -80,7 +79,6 @@ export default class Rocket implements Component {
 
             Game.instance!.score += this.damage / 10;
             this.app.spawn({
-                collider: new Collider(),
                 base: new PlanetHit(this.x, this.y, this.damage),
                 ui: new PlanetHitUI()
             });
