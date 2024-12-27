@@ -8,7 +8,7 @@ export default class Application {
     public readonly window = new Window();
     public entities = new Set<Entity<{ base?: Component, ui?: UI }>>();
     public dt = 0.0001; // 0 may cause NaN
-    public backgroundColor: `#${string}` = '#aaa';
+    public backgroundColor: `#${string}` = '#777';
     public shakePower = 0;
 
     private readonly cachedGameLoop: () => void = this.gameLoop.bind(this);

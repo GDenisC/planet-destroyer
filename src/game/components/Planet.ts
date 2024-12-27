@@ -110,6 +110,7 @@ export default class Planet implements Component {
             this.app.shakePower = 0;
             this.spawnDecorations();
             this.makeLayers();
+            this.app.backgroundColor = '#' + (Math.random() > 0.5 ? 'c' : 'b') + (Math.random() > 0.5 ? 'c' : 'b') + (Math.random() > 0.5 ? 'c' : 'b') as `#${string}`;
         }
     }
 
