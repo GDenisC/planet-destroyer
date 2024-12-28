@@ -5,7 +5,7 @@ const IS_PRODUCTION = false;
 /** @type {import('esbuild').BuildOptions} */
 const config = {
     entryPoints: ['src/index.ts'],
-    outfile: 'dist/bundle.js',
+    outfile: 'public/bundle.js',
     bundle: true,
     minify: IS_PRODUCTION,
     sourcemap: IS_PRODUCTION ? 'external' : 'linked', // save sourcemap on production to check errors
@@ -15,4 +15,4 @@ const config = {
     logLevel: 'info'
 };
 
-esbuild.context(config).then(ctx => ctx.serve({ servedir: 'dist', port: 2222 }));
+esbuild.context(config).then(ctx => ctx.serve({ servedir: 'public', port: 2222 }));
