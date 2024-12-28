@@ -24,7 +24,7 @@ export default class Planet implements Component {
     public static readonly SIZE = 250;
     public static readonly DEATH_TIME = 1;
     public app: Application = null!;
-    public scale = 10;
+    public scale = 1;
     public destroyed = false;
     public deathTime = 0;
     public layers: PlanetLayer[] = [];
