@@ -114,4 +114,9 @@ export default class Game {
         this.clearExplosions();
         this.clearTrees();
     }
+
+    /** speedhack */
+    public getTimeSpeed(): number {
+        return 5;
+    }
 }

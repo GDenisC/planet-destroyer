@@ -3,16 +3,16 @@ import Collider from '../Collider';
 import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
-import DecorationUI from '../ui/Decoration';
+import DecorationUI from '../components/ui/Decoration';
 import Component from './Component';
 import Decoration, { DecorationType } from './Decoration';
 import Rocket from './Rocket';
 
 const planetPalette = [
-    { bg: '774', layers: ['ff9', 'fd9', 'fe9', 'ff9', 'ef9', 'df9'] },
-    { bg: '446', layers: ['99f', '9af', '9cf', 'a9f', 'c9f'] },
-    { bg: '744', layers: ['fa9', 'f9b', 'f9a', 'fa9', 'fb9', 'fc9'] },
-    { bg: '132', layers: ['7e8', '7e7', 'ae7', '9e7', '7e7'] }
+    { bg: '996', layers: ['ff9', 'fd9', 'fe9', 'ff9', 'ef9', 'df9'] },
+    { bg: '779', layers: ['99f', '9af', '9cf', 'a9f', 'c9f'] },
+    { bg: 'a66', layers: ['fa9', 'f2a291', 'fb9', 'e89', 'f9a', 'fa9', 'fc9'] },
+    { bg: '5a7', layers: ['8f9', '80f690', '7e8', '6d7', '7e7'] }
 ];
 
 interface PlanetLayer {
@@ -28,7 +28,7 @@ export default class Planet implements Component {
     public destroyed = false;
     public deathTime = 0;
     public layers: PlanetLayer[] = [];
-    public rocketTime = 0;
+    public rocketTime = 1; // instant spawn
     public rocketInterval = 1;
 
     private collider = new Collider();
@@ -44,12 +44,12 @@ export default class Planet implements Component {
     }
 
     public spawnDecorations() {
-        if (this.scale > 25) return;
+        if (this.scale > 50) return;
 
-        const amount = Math.min(59, Math.round(30 * this.scale));
+        const amount = Math.min(80, Math.round(30 * this.scale));
 
         for (let i = 0; i < amount; ++i) {
-            let angle = Math.random() * Math.PI * 2;
+            let angle = Math.PI * 2 * i / amount + (Math.random() * 30 - 15) * Math.PI / 180;
 
             this.app.spawn({ base: new Decoration(
                 Math.cos(angle) * Planet.SIZE,
@@ -70,7 +70,8 @@ export default class Planet implements Component {
 
         while (height > middleRadius) {
             this.layers.push({ radius: height / this.scale, color: '#' + layersPalette[i % layersPalette.length] });
-            height -= 100 + 200 * Math.random();
+            if (i == 0) height -= 15 * this.scale;
+            else height -= 5 * this.scale + 50 * i + 40 * i * Math.random();
             i += 1;
         }
     }
@@ -81,22 +82,27 @@ export default class Planet implements Component {
     }
 
     public update(dt: number) {
-        let time = this.timeMultiplier();
+        let time = this.getTimeMultiplier();
 
         this.rotate(dt / 10 * time);
 
         this.rocketTime += dt * time;
 
         if (this.rocketTime > this.rocketInterval) {
-            Rocket.spawnOnOrbit(10, 80, 1);
+            let amount = Math.floor(this.rocketTime / this.rocketInterval);
+            for (;amount;--amount) {
+                Rocket.spawnOnOrbit(10, 80, 1);
+            }
             this.rocketTime = 0;
         }
 
         if (!this.destroyed) return;
 
-        this.deathTime += dt;
+        let timeSpeed = Game.instance!.getTimeSpeed();
 
-        this.app.shakePower = 10 * time;
+        this.deathTime += dt * timeSpeed;
+
+        this.app.shakePower = 10 * time / timeSpeed;
 
         if (this.deathTime > Planet.DEATH_TIME) {
             Game.instance!.score += Math.pow(100 * this.scale, 1.1);
@@ -108,6 +114,7 @@ export default class Planet implements Component {
             this.app.shakePower = 0;
             this.updatePalette();
             this.spawnDecorations();
+            this.rocketTime = this.rocketInterval;
         }
     }
 
@@ -135,11 +142,11 @@ export default class Planet implements Component {
     }
 
     public centerAreaRadius(): number {
-        return Planet.SIZE * Math.max(1, 3 - this.scale / 2) / 10;
+        return Planet.SIZE * Math.max(0.05, 0.25 - this.scale / 50 * 0.20);
     }
 
-    public timeMultiplier(): number {
-        return Math.max(0, Planet.DEATH_TIME - this.deathTime) / Planet.DEATH_TIME;
+    public getTimeMultiplier(): number {
+        return Math.max(0, Planet.DEATH_TIME - this.deathTime) / Planet.DEATH_TIME * Game.instance!.getTimeSpeed();
     }
 
     public rotate(radians: number) {

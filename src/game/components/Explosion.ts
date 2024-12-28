@@ -23,7 +23,7 @@ export default class Explosion implements Component {
     }
 
     public update(dt: number) {
-        dt *= this.planet.timeMultiplier();
+        dt *= this.planet.getTimeMultiplier();
         this.timer += dt;
         if (this.timer > this.explosionTime)
             this.entity.destroy();

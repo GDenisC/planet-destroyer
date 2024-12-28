@@ -5,7 +5,7 @@ export default class Styles extends Tag<HTMLStyleElement> {
         super('style');
 
         this.addStyle('body', { margin: 0, overflow: 'hidden' });
-        this.addStyle('canvas', { width: '100vw', height: '100vh', cursor: 'crosshair' });
+        this.addStyle('canvas', { width: '100vw', height: '100vh' });
     }
 
     public addStyle(name: string, styles: Record<string, { toString: () => string }>) {

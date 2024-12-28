@@ -1,4 +1,4 @@
-import Component from '../components/Component';
+import Component from '../Component';
 
 export interface UIContext {
     x: number;

@@ -3,10 +3,10 @@ import Collider from '../Collider';
 import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
-import PlanetHitUI from '../ui/PlanetHit';
+import PlanetHitUI from '../components/ui/PlanetHit';
 import Component from './Component';
 import PlanetHit from './PlanetHit';
-import RocketUI from '../ui/Rocket';
+import RocketUI from '../components/ui/Rocket';
 
 const TAU = Math.PI * 2;
 
@@ -45,7 +45,7 @@ export default class Rocket implements Component {
 
     public update(dt: number) {
         const planet = Game.instance!.planet,
-            time = planet.timeMultiplier();
+            time = planet.getTimeMultiplier();
 
         this.angle += dt / planet.scale * time;
 
@@ -61,7 +61,9 @@ export default class Rocket implements Component {
         this.updateCollider();
 
         if (planet.intersects(this.collider)) {
-            let limit = 10;
+            let timeSpeed = Game.instance!.getTimeSpeed(),
+                limit = 10 * timeSpeed;
+
             do {
                 this.x -= Math.cos(this.angle) * speed;
                 this.y -= Math.sin(this.angle) * speed;
@@ -69,10 +71,10 @@ export default class Rocket implements Component {
                 limit -= 1;
             } while (planet.intersects(this.collider) && limit > 0);
 
-            limit = 10;
+            limit = 10 * timeSpeed;
             while (!planet.intersects(this.collider) && limit > 0) {
-                this.x += Math.cos(this.angle) * speed / 10;
-                this.y += Math.sin(this.angle) * speed / 10;
+                this.x += Math.cos(this.angle) * speed / 10 / timeSpeed;
+                this.y += Math.sin(this.angle) * speed / 10 / timeSpeed;
                 this.updateCollider();
                 limit -= 1;
             }

@@ -1,6 +1,6 @@
-import Explosion from '../components/Explosion';
-import Entity from '../Entity';
-import Game from '../Game';
+import Explosion from '../Explosion';
+import Entity from '../../Entity';
+import Game from '../../Game';
 import { UI, UIContext } from './UI';
 
 export default class ExplosionUI implements UI {

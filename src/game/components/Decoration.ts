@@ -1,7 +1,6 @@
 import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
-import Collider from './Collider';
 import Component from './Component';
 
 export const enum DecorationType {
