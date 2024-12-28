@@ -117,6 +117,6 @@ export default class Game {
 
     /** speedhack */
     public getTimeSpeed(): number {
-        return 5;
+        return 1;
     }
 }

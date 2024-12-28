@@ -47,7 +47,7 @@ export default class Rocket implements Component {
         const planet = Game.instance!.planet,
             time = planet.getTimeMultiplier();
 
-        this.angle += dt / planet.scale * time;
+        this.angle += dt * time;
 
         this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * 4 * time));
 
@@ -84,7 +84,12 @@ export default class Rocket implements Component {
                 base: new PlanetHit(this.x, this.y, this.damage),
                 ui: new PlanetHitUI()
             });
-            if (--this.fuel <= 0) this.entity.destroy();
+
+            if (--this.fuel <= 0) {
+                this.entity.destroy();
+                let rockets = Game.instance!.rockets;
+                rockets.splice(rockets.indexOf(this), 1);
+            }
         }
     }
 

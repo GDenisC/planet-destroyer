@@ -47,6 +47,8 @@ export default class Application {
         ctx.fillStyle = this.backgroundColor;
         ctx.fillRect(0, 0, canvas.cachedWidth, canvas.cachedHeight);
 
+        this.setCursorStyle(CursorStyle.Default);
+
         for (let entity of this.entities) {
             if (entity.destroyed) continue;
             let entityBase = entity.getComponent('base'),

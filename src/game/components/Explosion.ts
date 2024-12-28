@@ -25,8 +25,11 @@ export default class Explosion implements Component {
     public update(dt: number) {
         dt *= this.planet.getTimeMultiplier();
         this.timer += dt;
-        if (this.timer > this.explosionTime)
+        if (this.timer > this.explosionTime) {
             this.entity.destroy();
+            let explosions = Game.instance!.explosions;
+            explosions.splice(explosions.indexOf(this), 1);
+        }
     }
 
     public alpha() {

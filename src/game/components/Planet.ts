@@ -150,23 +150,30 @@ export default class Planet implements Component {
     }
 
     public rotate(radians: number) {
-        let cos = Math.cos(radians),
-            sin = Math.sin(radians);
+        let sin = Math.sin(radians);
+
+        // (normal speed)
+        // cos = 0.9999...
+        // sin = 0.0007...
+        // distanceIn = 250.0
+        // distanceOut = 249.9
+        //
+        // so, cos = 1
 
         for (let hit of Game.instance!.hits) {
-            hit.x = hit.x * cos - hit.y * sin;
-            hit.y = hit.x * sin + hit.y * cos;
+            hit.x = hit.x - hit.y * sin;
+            hit.y = hit.x * sin + hit.y;
             hit.updateCollider();
         }
 
         for (let explosion of Game.instance!.explosions) {
-            explosion.x = explosion.x * cos - explosion.y * sin;
-            explosion.y = explosion.x * sin + explosion.y * cos;
+            explosion.x = explosion.x - explosion.y * sin;
+            explosion.y = explosion.x * sin + explosion.y;
         }
 
         for (let deco of Game.instance!.decorations) {
-            deco.x = deco.x * cos - deco.y * sin;
-            deco.y = deco.x * sin + deco.y * cos;
+            deco.x = deco.x - deco.y * sin;
+            deco.y = deco.x * sin + deco.y;
             deco.angle += radians;
         }
     }
