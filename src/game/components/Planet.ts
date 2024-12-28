@@ -4,12 +4,16 @@ import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
 import DecorationUI from '../ui/Decoration';
-import RocketUI from '../ui/Rocket';
 import Component from './Component';
 import Decoration, { DecorationType } from './Decoration';
 import Rocket from './Rocket';
 
-const layerColors = ['#ec9', '#ed9', '#de9', '#ce9'];
+const planetPalette = [
+    { bg: '774', layers: ['ff9', 'fd9', 'fe9', 'ff9', 'ef9', 'df9'] },
+    { bg: '446', layers: ['99f', '9af', '9cf', 'a9f', 'c9f'] },
+    { bg: '744', layers: ['fa9', 'f9b', 'f9a', 'fa9', 'fb9', 'fc9'] },
+    { bg: '132', layers: ['7e8', '7e7', 'ae7', '9e7', '7e7'] }
+];
 
 interface PlanetLayer {
     radius: number,
@@ -20,7 +24,7 @@ export default class Planet implements Component {
     public static readonly SIZE = 250;
     public static readonly DEATH_TIME = 1;
     public app: Application = null!;
-    public scale = 1;
+    public scale = 10;
     public destroyed = false;
     public deathTime = 0;
     public layers: PlanetLayer[] = [];
@@ -35,8 +39,8 @@ export default class Planet implements Component {
         this.app = entity.app;
 
         this.updateColliders();
+        this.updatePalette();
         this.spawnDecorations();
-        this.makeLayers();
     }
 
     public spawnDecorations() {
@@ -57,15 +61,17 @@ export default class Planet implements Component {
         }
     }
 
-    public makeLayers() {
+    public makeLayers(layersPalette: string[]) {
         this.layers.splice(0, this.layers.length);
 
-        let height = this.middleAreaRadius() * this.scale - 250 - 100 * Math.random(),
-            middleRadius = this.centerAreaRadius();
+        let height = Planet.SIZE * this.scale,
+            middleRadius = this.centerAreaRadius(),
+            i = 0;
 
         while (height > middleRadius) {
-            this.layers.push({ radius: height / this.scale, color: layerColors[Math.floor(Math.random() * layerColors.length)] });
-            height -= 100 + 250 * Math.random();
+            this.layers.push({ radius: height / this.scale, color: '#' + layersPalette[i % layersPalette.length] });
+            height -= 100 + 200 * Math.random();
+            i += 1;
         }
     }
 
@@ -100,10 +106,15 @@ export default class Planet implements Component {
             this.destroyed = false;
             this.deathTime = 0;
             this.app.shakePower = 0;
+            this.updatePalette();
             this.spawnDecorations();
-            this.makeLayers();
-            this.app.backgroundColor = '#' + (Math.random() > 0.5 ? 'c' : 'b') + (Math.random() > 0.5 ? 'c' : 'b') + (Math.random() > 0.5 ? 'c' : 'b') as `#${string}`;
         }
+    }
+
+    public updatePalette() {
+        const palette = planetPalette[Math.floor(Math.random() * planetPalette.length)];
+        this.makeLayers(palette.layers);
+        this.app.backgroundColor = '#' + palette.bg as `#${string}`;
     }
 
     public intersects(collider: Collider): boolean {
@@ -121,10 +132,6 @@ export default class Planet implements Component {
         if (this.centerCollider.intersects(collider, false)) {
             this.destroyed = true;
         }
-    }
-
-    public middleAreaRadius(): number {
-        return Planet.SIZE - Math.max(0, 25 / Math.sqrt(this.scale) - 10 * Game.instance!.hits.length / 10 / this.scale);
     }
 
     public centerAreaRadius(): number {

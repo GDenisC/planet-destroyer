@@ -11,13 +11,14 @@ export default class DecorationUI implements UI {
     }
 
     public render(ctx: CanvasRenderingContext2D, ui: UIContext) {
-        let scale = ui.winScale / Game.instance!.planet.scale,
+        let planet = Game.instance!.planet,
+            scale = ui.winScale / planet.scale,
             size = this.decoration.size * scale;
 
         ctx.translate(ui.x + this.decoration.x * ui.winScale, ui.y + this.decoration.y * ui.winScale);
         if (this.decoration.type == DecorationType.Tree) ctx.rotate(this.decoration.angle);
 
-        ctx.fillStyle = '#0d0';
+        ctx.fillStyle = planet.layers[0].color || '#ddd';
 
         switch (this.decoration.type) {
             case DecorationType.Hill:

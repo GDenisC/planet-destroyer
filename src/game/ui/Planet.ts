@@ -10,18 +10,6 @@ export default class PlanetUI implements UI {
     }
 
     public render(ctx: CanvasRenderingContext2D, ui: UIContext): void {
-        ctx.beginPath();
-        ctx.arc(ui.x, ui.y, Planet.SIZE * ui.winScale, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fillStyle = '#0d0';
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(ui.x, ui.y, this.planet.middleAreaRadius() * ui.winScale, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fillStyle = '#ff9';
-        ctx.fill();
-
         for (let i = 0, l = this.planet.layers.length; i < l; ++i) {
             let layer = this.planet.layers[i];
             ctx.beginPath();
