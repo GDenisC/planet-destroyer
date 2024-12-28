@@ -7,7 +7,11 @@ export default class Button {
     public isPressed = false;
     private clicked = false;
 
-    public constructor(public x: number, public y: number, public width: number, public height: number, public onClick: () => void) {}
+    public constructor(
+        public offsetX: number, public offsetY: number,
+        public screenX: number, public screenY: number,
+        public width: number, public height: number, public onClick: () => void
+    ) {}
 
     public update() {
         this.mouseOver = this.isMouseOver();
@@ -30,8 +34,8 @@ export default class Button {
         strokeWidth: number, strokeColor: string, overStrokeColor: string, pressStrokeColor: string,
         rounding: number
     ) {
-        let x = ui.x + this.x * ui.winScale,
-            y = ui.y + this.y * ui.winScale,
+        let x = this.offsetX * ui.winScale + this.screenX * ui.width,
+            y = this.offsetY * ui.winScale + this.screenY * ui.height,
             w = this.width * ui.winScale,
             h = this.height * ui.winScale,
             r = rounding * ui.winScale,
@@ -59,12 +63,12 @@ export default class Button {
         ctx.globalAlpha = separatorAlpha;
 
         if (width) {
-            ctx.strokeStyle = this.isPressed ? pressStrokeColor : this.mouseOver ? overStrokeColor : strokeColor;
+            ctx.strokeStyle = '#000';
             ctx.lineWidth = width;
             ctx.stroke();
         }
 
-        ctx.fillStyle = fillColor;
+        ctx.fillStyle = '#fff';
         ctx.fill();
         ctx.globalAlpha = 1;
     }
@@ -75,10 +79,10 @@ export default class Button {
             h = this.height / 2;
 
         return (
-            mouse.x > this.x - w &&
-            mouse.x < this.x + w &&
-            mouse.y > this.y - h &&
-            mouse.y < this.y + h
+            mouse.x > this.offsetX - w &&
+            mouse.x < this.offsetX + w &&
+            mouse.y > this.offsetY - h &&
+            mouse.y < this.offsetY + h
         );
     }
 }
