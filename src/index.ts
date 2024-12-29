@@ -1,9 +1,9 @@
 import Application from './Application';
-import Planet from './game/components/Planet';
-import Game from './game/Game';
-import PlanetUI from './game/components/ui/Planet';
 import Overlay from './game/components/Overlay';
+import Planet from './game/components/Planet';
 import OverlayUI from './game/components/ui/Overlay';
+import PlanetUI from './game/components/ui/Planet';
+import Game from './game/Game';
 
 const app = new Application();
 

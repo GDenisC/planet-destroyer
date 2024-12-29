@@ -1,9 +1,9 @@
 import Application from '../../Application';
 import Collider from '../Collider';
+import DecorationUI from '../components/ui/Decoration';
 import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
-import DecorationUI from '../components/ui/Decoration';
 import Component from './Component';
 import Decoration, { DecorationType } from './Decoration';
 import Rocket from './Rocket';

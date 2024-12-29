@@ -1,7 +1,7 @@
 import { CursorStyle } from './Canvas';
 import Component from './game/components/Component';
-import Entity from './game/Entity';
 import { UI, UIContext } from './game/components/ui/UI';
+import Entity from './game/Entity';
 import Window from './Window';
 
 export default class Application {

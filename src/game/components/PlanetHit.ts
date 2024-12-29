@@ -1,8 +1,8 @@
 import Collider from '../Collider';
+import ExplosionUI from '../components/ui/Explosion';
 import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
-import ExplosionUI from '../components/ui/Explosion';
 import Component from './Component';
 import Explosion from './Explosion';
 

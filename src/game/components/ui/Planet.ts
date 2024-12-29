@@ -1,5 +1,5 @@
-import Planet from '../Planet';
 import Entity from '../../Entity';
+import Planet from '../Planet';
 import { UI, UIContext } from './UI';
 
 export default class PlanetUI implements UI {

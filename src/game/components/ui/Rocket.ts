@@ -1,6 +1,6 @@
-import Rocket from '../Rocket';
 import Entity from '../../Entity';
 import Game from '../../Game';
+import Rocket from '../Rocket';
 import { UI, UIContext } from './UI';
 
 export default class PocketUI implements UI {

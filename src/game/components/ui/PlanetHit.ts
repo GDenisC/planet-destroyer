@@ -1,7 +1,7 @@
 import Application from '../../../Application';
-import PlanetHit from '../PlanetHit';
 import Entity from '../../Entity';
 import Game from '../../Game';
+import PlanetHit from '../PlanetHit';
 import { UI, UIContext } from './UI';
 
 export default class PlanetHitUI implements UI {
