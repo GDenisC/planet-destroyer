@@ -70,24 +70,24 @@ export default class OverlayUI implements UI {
     private renderEpochGain(ctx: CanvasRenderingContext2D, ui: UIContext, progress: number, game: Game) {
         if (progress < 0.5) return;
 
-        const progressBarSize = 400 * ui.winScale;
+        const progressBarSize = 300 * ui.winScale;
 
         ctx.beginPath();
-        ctx.roundRect(ui.width / 2 - progressBarSize / 2, 94 * ui.winScale, progressBarSize, 16 * ui.winScale, 8 * ui.winScale);
+        ctx.roundRect(ui.width / 2 - progressBarSize / 2, 94 * ui.winScale, progressBarSize, 24 * ui.winScale, 12 * ui.winScale);
         ctx.closePath();
         ctx.fillStyle = 'rgba(0,0,0,0.25)';
         ctx.fill();
 
         ctx.beginPath();
-        ctx.roundRect(ui.width / 2 - progressBarSize / 2, 94 * ui.winScale, progressBarSize * progress, 16 * ui.winScale, 8 * ui.winScale);
+        ctx.roundRect(ui.width / 2 - progressBarSize / 2, 94 * ui.winScale, progressBarSize * progress, 24 * ui.winScale, 12 * ui.winScale);
         ctx.closePath();
         ctx.fillStyle = 'rgb(218, 255, 55)';
         ctx.fill();
 
         if (progress < 1) return;
 
-        ctx.font = 16 * ui.winScale + 'px Ubuntu';
+        ctx.font = 20 * ui.winScale + 'px Ubuntu';
         ctx.fillStyle = '#222';
-        ctx.fillText(Epoch.calculatePoints(game.level) + ' EP gain', ui.width / 2, 94 * ui.winScale + 16 * ui.winScale / 2);
+        ctx.fillText(Epoch.calculatePoints(game.level) + ' EP gain', ui.width / 2, 94 * ui.winScale + 24 * ui.winScale / 2);
     }
 }
