@@ -5,7 +5,7 @@ import Overlay from './components/Overlay';
 import Planet from './components/Planet';
 import PlanetHit from './components/PlanetHit';
 import Rocket from './components/Rocket';
-import Epoch from './epoch/Epoch';
+import Epoch from './Epoch';
 
 export default class Game {
     public static readonly isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -16,7 +16,7 @@ export default class Game {
     public readonly explosions: Explosion[] = [];
     public readonly decorations: Decoration[] = [];
     public readonly epoch = new Epoch();
-    public level = 100;
+    public level = 1;
     public score = 0;
 
     public constructor(
@@ -108,7 +108,7 @@ export default class Game {
 
     /** speedhack */
     public getTimeSpeed(): number {
-        return 5 * this.epoch.multipliers.time;
+        return this.epoch.multipliers.time;
     }
 
     public reset() {
@@ -116,5 +116,6 @@ export default class Game {
         this.level = 1;
         this.clearAll();
         this.planet.reset();
+        this.overlay.resetUpgrades();
     }
 }

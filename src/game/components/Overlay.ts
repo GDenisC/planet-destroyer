@@ -1,10 +1,12 @@
 import CostMultiplier from '../buttons/epoch/CostMultiplier';
 import EpochUpgrade from '../buttons/epoch/EpochUpgrade';
+import PenetrationChance from '../buttons/epoch/PenetrationChance';
 import PowerMultiplier from '../buttons/epoch/PowerMultiplier';
 import ScoreMultiplier from '../buttons/epoch/ScoreMultiplier';
 import TimeMultiplier from '../buttons/epoch/TimeMultiplier';
 import NewEpochBtn from '../buttons/NewEpochBtn';
 import PlayBtn from '../buttons/PlayBtn';
+import StartEpochBtn from '../buttons/StartEpochBtn';
 import GravityUpgrade from '../buttons/upgrade/GravityUpgrade';
 import LessIntervalUpgrade from '../buttons/upgrade/LessIntervalUpgrade';
 import PowerUpgrade from '../buttons/upgrade/PowerUpgrade';
@@ -36,11 +38,13 @@ export default class Overlay implements Component {
         new PowerMultiplier(),
         new ScoreMultiplier(),
         new CostMultiplier(),
-        new TimeMultiplier()
+        new TimeMultiplier(),
+        new PenetrationChance()
     ]
 
     public readonly play = new PlayBtn();
     public readonly newEpoch = new NewEpochBtn();
+    public readonly startEpoch = new StartEpochBtn();
 
     public constructor() {
         this.logoImage = new Image();
@@ -50,5 +54,11 @@ export default class Overlay implements Component {
     public init(entity: Entity): void {
         entity.zOrder = Order.Overlay;
         this.entity = entity;
+    }
+
+    public resetUpgrades() {
+        for (let upgrade of this.upgrades) {
+            upgrade.reset();
+        }
     }
 }

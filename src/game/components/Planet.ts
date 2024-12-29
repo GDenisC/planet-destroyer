@@ -48,6 +48,7 @@ export default class Planet implements Component {
     }
 
     public update(dt: number) {
+        const game = Game.instance!;
         let time = this.getTimeMultiplier();
 
         this.rotate(dt / 10 * time);
@@ -66,17 +67,17 @@ export default class Planet implements Component {
 
         if (!this.destroyed) return;
 
-        let timeSpeed = Game.instance!.getTimeSpeed();
+        let timeSpeed = game.getTimeSpeed();
 
         this.deathTime += dt * timeSpeed;
 
         this.app.shakePower = 10 * time / timeSpeed;
 
-        if (this.deathTime > Planet.DEATH_TIME) {
-            Game.instance!.score += Math.pow(75 * this.scale, 1.1);
-            Game.instance!.clearAll();
+        if (this.deathTime > Planet.DEATH_TIME * game.epoch.multipliers.reset) {
+            game.score += Math.pow(75 * this.scale, 1.1);
+            game.clearAll();
             this.scale *= Math.pow(1.125, 2 / this.scale);
-            Game.instance!.level += 1;
+            game.level += 1;
             this.updateColliders();
             this.destroyed = false;
             this.deathTime = 0;
@@ -168,7 +169,9 @@ export default class Planet implements Component {
     }
 
     public getTimeMultiplier(): number {
-        return Math.max(0, Planet.DEATH_TIME - this.deathTime) / Planet.DEATH_TIME * Game.instance!.getTimeSpeed();
+        const game = Game.instance!,
+            reset = game.epoch.multipliers.reset;
+        return Math.max(0, Planet.DEATH_TIME * reset  - this.deathTime) / Planet.DEATH_TIME * reset * game.getTimeSpeed();
     }
 
     public rotate(radians: number) {
@@ -201,9 +204,14 @@ export default class Planet implements Component {
     }
 
     public reset() {
+        this.rocketPower = 100;
+        this.rocketSpeed = 1;
+        this.rocketGravity = 0;
         this.scale = 1;
         this.destroyed = false;
         this.deathTime = 0;
+        this.rocketTime = 1;
+        this.rocketInterval = 1;
         this.app.shakePower = 0;
         this.updateColliders();
         this.updatePalette();

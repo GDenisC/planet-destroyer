@@ -39,16 +39,16 @@ export default abstract class EpochUpgrade extends Button {
         ctx.fillStyle = 'rgba(0,0,0,0.5)';
         ctx.fill();
 
-        ctx.font = 36 * ui.winScale + 'px Ubuntu';
-        ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = '#fff';
 
-        ctx.fillText(this.name + ' Upgrade [' + this.level + ']', measure.x + 300 * ui.winScale, measure.y + textOffset);
+        ctx.font = 36 * ui.winScale + 'px Ubuntu';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#fff';
+        ctx.fillText(this.name + ' Upgrade [' + this.level + ']', measure.x + 140 * ui.winScale, measure.y + textOffset);
 
         ctx.font = 24 * ui.winScale + 'px Ubuntu';
         ctx.textAlign = 'right';
-        ctx.fillText('Cost ' + this.cost.toFixed(0) + ' EP', measure.x + width + 80 * ui.winScale, measure.y + textOffset);
+        ctx.fillText('Cost ' + this.cost.toFixed(0) + ' EP', measure.x + width + 80 * ui.winScale, measure.y + textOffset * 1.5);
 
         ctx.font = 18 * ui.winScale + 'px Ubuntu';
         ctx.textAlign = 'left';

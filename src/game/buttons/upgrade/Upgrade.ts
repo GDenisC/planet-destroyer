@@ -3,6 +3,7 @@ import { UIContext } from '../../components/ui/UI';
 import Game from '../../Game';
 
 export default abstract class Upgrade extends Button {
+    private readonly initialCost: number;
     protected cachedDescription: string[] = [];
     public level = 1;
 
@@ -19,6 +20,7 @@ export default abstract class Upgrade extends Button {
             pressStrokeColor: 'hsl(199, 53%, 76%)',
             rounding: 20
         });
+        this.initialCost = cost;
     }
 
     public render(ctx: CanvasRenderingContext2D, ui: UIContext): void {
@@ -73,6 +75,13 @@ export default abstract class Upgrade extends Button {
         this.level += 1;
         this.cachedDescription = this.getDescription();
         if (this.level == this.maxLevel) this.text = 'MAX';
+    }
+
+    public reset() {
+        this.level = 1;
+        this.cost = this.initialCost;
+        this.cachedDescription = this.getDescription();
+        this.text = 'BUY';
     }
 
     public abstract onPurchase(game: Game): void;

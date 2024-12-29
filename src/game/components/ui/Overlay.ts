@@ -1,5 +1,5 @@
 import Entity from '../../Entity';
-import Epoch from '../../epoch/Epoch';
+import Epoch from '../../Epoch';
 import Game from '../../Game';
 import Overlay, { Scene } from '../Overlay';
 import { UI, UIContext } from './UI';
@@ -104,10 +104,16 @@ export default class OverlayUI implements UI {
         ctx.fillStyle = 'rgb(218,255,55)';
         ctx.fillText(game.epoch.points + ' Epoch Points', ui.width / 2, 36 * ui.winScale);
 
+        ctx.font = 24 * ui.winScale + 'px Ubuntu';
+        ctx.fillStyle = 'rgb(127, 148, 33)';
+        ctx.fillText(game.epoch.count + ' Epoch', ui.width / 2, (36 + 24 + 4) * ui.winScale );
+
         for (let i = 0, l = this.overlay.epochUpgrades.length; i < l; ++i) {
             let upgrade = this.overlay.epochUpgrades[i];
-            upgrade.options.offsetY = 116 + 130 * i;
+            upgrade.options.offsetY = 130 * (i + 1);
             upgrade.render(ctx, ui);
         }
+
+        this.overlay.startEpoch.render(ctx, ui);
     }
 }

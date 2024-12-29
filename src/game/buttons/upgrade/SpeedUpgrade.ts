@@ -8,7 +8,7 @@ export default class SpeedUpgrade extends Upgrade {
 
     public onPurchase(game: Game): void {
         game.planet.rocketSpeed *= 2;
-        this.cost *= 2;
+        this.cost *= 2 * game.epoch.multipliers.cost;
     }
 
     public getDescription(): string[] {

@@ -7,7 +7,6 @@ import PlanetHitUI from '../components/ui/PlanetHit';
 import Component from './Component';
 import PlanetHit from './PlanetHit';
 import RocketUI from '../components/ui/Rocket';
-import Planet from './Planet';
 
 const TAU = Math.PI * 2;
 
@@ -25,7 +24,7 @@ export default class Rocket implements Component {
     public app: Application = null!;
     public collider = new Collider();
     public angle: number;
-    public fuel = 1;
+    public penetration = 1;
 
     public constructor(
         public x: number,
@@ -46,7 +45,8 @@ export default class Rocket implements Component {
     }
 
     public update(dt: number) {
-        const planet = Game.instance!.planet,
+        const game = Game.instance!,
+            planet = game.planet,
             time = planet.getTimeMultiplier();
 
         this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time));
@@ -61,8 +61,9 @@ export default class Rocket implements Component {
         this.updateCollider();
 
         if (planet.intersects(this.collider)) {
-            let timeSpeed = Game.instance!.getTimeSpeed(),
-                limit = 10 * timeSpeed;
+            let timeSpeed = game.getTimeSpeed(),
+                limit = 10 * timeSpeed,
+                multipliers = game.epoch.multipliers;
 
             do {
                 this.x -= Math.cos(this.angle) * speed;
@@ -82,16 +83,17 @@ export default class Rocket implements Component {
             let dist = Math.sqrt(this.x * this.x + this.y * this.y),
                 gravityPower = 1 + (Math.pow(2, this.gravity) - 1) / dist
 
-            Game.instance!.score += this.damage * gravityPower / 10;
+            game.score += this.damage * gravityPower / 10 * multipliers.score;
             this.app.spawn({
-                base: new PlanetHit(this.x, this.y, this.damage * gravityPower),
+                base: new PlanetHit(this.x, this.y, this.damage * gravityPower * multipliers.power),
                 ui: new PlanetHitUI()
             });
 
-            if (--this.fuel <= 0) {
+            if (game.epoch.penetrationChance > Math.random()) this.penetration += 1;
+
+            if (--this.penetration <= 0) {
                 this.entity.destroy();
-                let rockets = Game.instance!.rockets;
-                rockets.splice(rockets.indexOf(this), 1);
+                game.rockets.splice(game.rockets.indexOf(this), 1);
             }
         }
     }

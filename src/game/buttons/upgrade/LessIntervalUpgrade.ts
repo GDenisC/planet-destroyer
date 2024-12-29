@@ -8,7 +8,7 @@ export default class LessIntervalUpgrade extends Upgrade {
 
     public onPurchase(game: Game): void {
         game.planet.rocketInterval /= Math.pow(2, 1 + this.level / 10);
-        this.cost *= 2;
+        this.cost *= 2 * game.epoch.multipliers.cost;
     }
 
     public getDescription(): string[] {
