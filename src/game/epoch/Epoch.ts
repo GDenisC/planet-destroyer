@@ -13,7 +13,7 @@ export default class Epoch {
     }
 
     public static calculatePoints(level: number): number {
-        return Math.round(Math.pow(level / Epoch.EPOCH_LEVEL, 1.1));
+        return Math.round(Math.pow(level / this.EPOCH_LEVEL, 2 + level / 1000));
     }
 
     public static calculateProgress(level: number): number {

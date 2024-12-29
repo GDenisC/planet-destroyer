@@ -28,8 +28,6 @@ export default class Overlay implements Component {
 
     public readonly play = new PlayBtn();
 
-    //public readonly upgrades = new Button(-58, 20, 1, 0, 100, 28, () => {});
-
     public constructor() {
         this.logoImage = new Image();
         this.logoImage.src = 'logo.png';
