@@ -5,5 +5,5 @@ export const enum Order {
     Default,
     Explosion,
     Rocket,
-    Ui
+    Overlay
 }

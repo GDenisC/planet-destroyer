@@ -7,6 +7,7 @@ import PlanetHitUI from '../components/ui/PlanetHit';
 import Component from './Component';
 import PlanetHit from './PlanetHit';
 import RocketUI from '../components/ui/Rocket';
+import Planet from './Planet';
 
 const TAU = Math.PI * 2;
 
@@ -31,9 +32,10 @@ export default class Rocket implements Component {
         public y: number,
         public size: number,
         public damage: number,
-        public speed: number
+        public speed: number,
+        public gravity: number
     ) {
-        this.angle = Math.atan2(this.y, this.x) - Math.PI;
+        this.angle = Math.random() * TAU;
         Game.instance!.rockets.push(this);
     }
 
@@ -47,9 +49,7 @@ export default class Rocket implements Component {
         const planet = Game.instance!.planet,
             time = planet.getTimeMultiplier();
 
-        this.angle += dt * time;
-
-        this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * 4 * time));
+        this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time));
 
         if (Number.isNaN(this.angle)) this.angle = Math.random() * TAU;
 
@@ -79,9 +79,12 @@ export default class Rocket implements Component {
                 limit -= 1;
             }
 
-            Game.instance!.score += this.damage / 10;
+            let dist = Math.sqrt(this.x * this.x + this.y * this.y),
+                gravityPower = 1 + (Math.pow(2, this.gravity) - 1) / dist
+
+            Game.instance!.score += this.damage * gravityPower / 10;
             this.app.spawn({
-                base: new PlanetHit(this.x, this.y, this.damage),
+                base: new PlanetHit(this.x, this.y, this.damage * gravityPower),
                 ui: new PlanetHitUI()
             });
 
@@ -97,13 +100,13 @@ export default class Rocket implements Component {
         this.collider.update({ x: this.x, y: this.y, radius: this.size / Game.instance!.planet.scale });
     }
 
-    public static spawnOnOrbit(size: number, damage: number, speed: number) {
+    public static spawnOnOrbit(damage: number, speed: number, gravity: number) {
         const angle = Math.random() * Math.PI * 2;
 
         const rocket = new Rocket(
             Math.cos(angle) * 1200,
             Math.sin(angle) * 1200,
-            size, damage, speed
+            damage / 8, damage, speed, gravity
         );
 
         Game.instance!.app.spawn({ base: rocket, ui: new RocketUI() });

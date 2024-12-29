@@ -6,6 +6,7 @@ export default class Styles extends Tag<HTMLStyleElement> {
 
         this.addStyle('body', { margin: 0, overflow: 'hidden' });
         this.addStyle('canvas', { width: '100vw', height: '100vh' });
+        this.addStyle('@font-face', { fontFamily: 'Ubuntu', src: 'url(./Ubuntu.ttf)' });
     }
 
     public addStyle(name: string, styles: Record<string, { toString: () => string }>) {

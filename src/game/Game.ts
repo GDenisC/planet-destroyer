@@ -4,6 +4,7 @@ import Explosion from './components/Explosion';
 import Planet from './components/Planet';
 import PlanetHit from './components/PlanetHit';
 import Rocket from './components/Rocket';
+import Epoch from './epoch/Epoch';
 
 export default class Game {
     public static readonly isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -13,7 +14,8 @@ export default class Game {
     public readonly hits: PlanetHit[] = [];
     public readonly explosions: Explosion[] = [];
     public readonly decorations: Decoration[] = [];
-    public touch: number | null = null;
+    public readonly epoch = new Epoch();
+    public level = 1;
     public score = 0;
 
     public constructor(
@@ -34,50 +36,37 @@ export default class Game {
         }
     }
 
-    setMousePosition(x: number, y: number) {
+    private setMousePosition(x: number, y: number) {
         Game.mouse.x = x * window.devicePixelRatio;
         Game.mouse.y = y * window.devicePixelRatio;
     }
 
-    onMouseStart(e: MouseEvent) {
-        Game.mouse.click = true;
+    private onMouseStart(e: MouseEvent) {
+        if (e.button == 0) Game.mouse.click = true;
         this.onMouseMove(e);
     }
 
-    onMouseMove(e: MouseEvent) {
+    private onMouseMove(e: MouseEvent) {
         this.setMousePosition(e.clientX, e.clientY);
     }
 
-    onMouseEnd(e: MouseEvent) {
-        Game.mouse.click = false;
+    private onMouseEnd(e: MouseEvent) {
+        if (e.button == 0) Game.mouse.click = false;
         this.onMouseMove(e);
     }
 
-    onTouchStart(e: TouchEvent) {
-        if (this.touch !== null) return;
-        this.touch = e.touches[0].identifier;
+    private onTouchStart(_: TouchEvent) {
         Game.mouse.click = true;
-        this.onTouchMove(e);
+        //this.onTouchMove(e);
     }
 
-    onTouchMove(e: TouchEvent) {
-        for (let touch of e.touches) {
-            if (touch.identifier === this.touch) {
-                this.setMousePosition(touch.clientX, touch.clientY);
-                return;
-            }
-        }
+    private onTouchMove(e: TouchEvent) {
+        let touch = e.touches[0];
+        this.setMousePosition(touch.clientX, touch.clientY);
     }
 
-    onTouchEnd(e: TouchEvent) {
-        for (let touch of e.changedTouches) {
-            if (touch.identifier === this.touch) {
-                this.onTouchMove(e);
-                this.touch = null;
-                Game.mouse.click = false;
-                return;
-            }
-        }
+    private onTouchEnd(_: TouchEvent) {
+        Game.mouse.click = false;
     }
 
     public clearRockets() {

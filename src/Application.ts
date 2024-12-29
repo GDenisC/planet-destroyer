@@ -3,6 +3,7 @@ import Component from './game/components/Component';
 import Entity from './game/Entity';
 import { UI, UIContext } from './game/components/ui/UI';
 import Window from './Window';
+import Planet from './game/components/Planet';
 
 export default class Application {
     public static readonly now: () => number = 'performance' in window && 'now' in performance ? performance.now.bind(performance) : Date.now();

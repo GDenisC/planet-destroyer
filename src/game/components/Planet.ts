@@ -30,6 +30,10 @@ export default class Planet implements Component {
     public layers: PlanetLayer[] = [];
     public rocketTime = 1; // instant spawn
     public rocketInterval = 1;
+    public rocketPower = 100;
+    public rocketSpeed = 1;
+    public rocketGravity = 0;
+    public shootRockets = false;
 
     private collider = new Collider();
     private centerCollider = new Collider();
@@ -41,6 +45,67 @@ export default class Planet implements Component {
         this.updateColliders();
         this.updatePalette();
         this.spawnDecorations();
+    }
+
+    public update(dt: number) {
+        let time = this.getTimeMultiplier();
+
+        this.rotate(dt / 10 * time);
+
+        if (this.shootRockets) {
+            this.rocketTime += dt * time;
+
+            if (this.rocketTime > this.rocketInterval) {
+                let amount = Math.floor(this.rocketTime / this.rocketInterval);
+                for (;amount;--amount) {
+                    Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed, this.rocketGravity);
+                }
+                this.rocketTime = 0;
+            }
+        }
+
+        if (!this.destroyed) return;
+
+        let timeSpeed = Game.instance!.getTimeSpeed();
+
+        this.deathTime += dt * timeSpeed;
+
+        this.app.shakePower = 10 * time / timeSpeed;
+
+        if (this.deathTime > Planet.DEATH_TIME) {
+            Game.instance!.score += Math.pow(75 * this.scale, 1.1);
+            Game.instance!.clearAll();
+            this.scale *= Math.pow(1.125, 2 / this.scale);
+            Game.instance!.level += 1;
+            this.updateColliders();
+            this.destroyed = false;
+            this.deathTime = 0;
+            this.app.shakePower = 0;
+            this.updatePalette();
+            this.spawnDecorations();
+            this.rocketTime = this.rocketInterval;
+        }
+    }
+
+    public respawn() {
+        let game = Game.instance!;
+        game.score += Math.pow(50 * game.level, 1.1);
+        game.clearAll();
+        this.scale *= Math.pow(1.125, 2 / Math.sqrt(this.scale));
+        game.level += 1;
+        this.updateColliders();
+        this.destroyed = false;
+        this.deathTime = 0;
+        this.app.shakePower = 0;
+        this.updatePalette();
+        this.spawnDecorations();
+        this.rocketTime = this.rocketInterval;
+    }
+
+    public updatePalette() {
+        const palette = planetPalette[Math.floor(Math.random() * planetPalette.length)];
+        this.makeLayers(palette.layers);
+        this.app.backgroundColor = '#' + palette.bg as `#${string}`;
     }
 
     public spawnDecorations() {
@@ -81,49 +146,6 @@ export default class Planet implements Component {
         this.centerCollider.update({ x: 0, y: 0, radius: this.centerAreaRadius() });
     }
 
-    public update(dt: number) {
-        let time = this.getTimeMultiplier();
-
-        this.rotate(dt / 10 * time);
-
-        this.rocketTime += dt * time;
-
-        if (this.rocketTime > this.rocketInterval) {
-            let amount = Math.floor(this.rocketTime / this.rocketInterval);
-            for (;amount;--amount) {
-                Rocket.spawnOnOrbit(10, 80, 1);
-            }
-            this.rocketTime = 0;
-        }
-
-        if (!this.destroyed) return;
-
-        let timeSpeed = Game.instance!.getTimeSpeed();
-
-        this.deathTime += dt * timeSpeed;
-
-        this.app.shakePower = 10 * time / timeSpeed;
-
-        if (this.deathTime > Planet.DEATH_TIME) {
-            Game.instance!.score += Math.pow(100 * this.scale, 1.1);
-            Game.instance!.clearAll();
-            this.scale *= 1.25;
-            this.updateColliders();
-            this.destroyed = false;
-            this.deathTime = 0;
-            this.app.shakePower = 0;
-            this.updatePalette();
-            this.spawnDecorations();
-            this.rocketTime = this.rocketInterval;
-        }
-    }
-
-    public updatePalette() {
-        const palette = planetPalette[Math.floor(Math.random() * planetPalette.length)];
-        this.makeLayers(palette.layers);
-        this.app.backgroundColor = '#' + palette.bg as `#${string}`;
-    }
-
     public intersects(collider: Collider): boolean {
         if (!this.collider.intersects(collider, true)) return false;
 
@@ -142,7 +164,7 @@ export default class Planet implements Component {
     }
 
     public centerAreaRadius(): number {
-        return Planet.SIZE * Math.max(0.05, 0.25 - this.scale / 50 * 0.20);
+        return Planet.SIZE * Math.max(0.05, 0.25 - this.scale / 10 * 0.20);
     }
 
     public getTimeMultiplier(): number {
