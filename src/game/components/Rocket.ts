@@ -35,7 +35,7 @@ export default class Rocket implements Component {
         public speed: number,
         public gravity: number
     ) {
-        this.angle = Math.random() * TAU;
+        this.angle = Math.atan2(this.y, this.x) - TAU + Math.random() * TAU / Game.instance!.planet.scale;
         Game.instance!.rockets.push(this);
     }
 
@@ -101,7 +101,7 @@ export default class Rocket implements Component {
     }
 
     public static spawnOnOrbit(damage: number, speed: number, gravity: number) {
-        const angle = Math.random() * Math.PI * 2;
+        const angle = Math.random() * TAU;
 
         const rocket = new Rocket(
             Math.cos(angle) * 1200,
