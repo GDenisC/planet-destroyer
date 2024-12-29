@@ -58,7 +58,7 @@ export default class Rocket implements Component {
 
         this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time * dist / Planet.SIZE));
 
-        const speed = Math.min(dist * planet.scale, dt * 500 * this.speed / planet.scale * time * (1 + 1 / game.epoch.multipliers.reset));
+        const speed = Math.min(dist * planet.scale, dt * 500 * this.speed / planet.scale * time * game.epoch.multipliers.speed);
 
         this.x += Math.cos(this.angle) * speed;
         this.y += Math.sin(this.angle) * speed;

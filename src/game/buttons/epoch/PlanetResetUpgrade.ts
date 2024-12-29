@@ -9,10 +9,11 @@ export default class PlanetResetUpgrade extends EpochUpgrade {
 
     public onPurchase(game: Game): void {
         game.epoch.multipliers.reset *= 0.8;
+        game.epoch.multipliers.speed += 0.1;
         this.cost *= 2;
     }
 
     public getDescription(): string {
-        return 'Decrease planet\'s reset by 20% each upgrade. Current reset time is ' + (Planet.DEATH_TIME * Game.instance!.epoch.multipliers.reset * 1000).toFixed(0) + 'ms. Slightly buffs rockets speed';
+        return 'Decrease planet\'s reset by 20% each upgrade. Current reset time is ' + (Planet.DEATH_TIME * Game.instance!.epoch.multipliers.reset * 1000).toFixed(0) + 'ms. Also buffs rockets speed by 10%';
     }
 }

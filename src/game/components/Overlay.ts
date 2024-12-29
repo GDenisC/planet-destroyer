@@ -1,3 +1,4 @@
+import Achievement from '../Achievement';
 import CostMultiplier from '../buttons/epoch/CostMultiplier';
 import EpochUpgrade from '../buttons/epoch/EpochUpgrade';
 import PenetrationChance from '../buttons/epoch/PenetrationChance';
@@ -24,6 +25,10 @@ export const enum Scene {
 }
 
 export default class Overlay implements Component {
+    public static readonly ACHIEVEMENT_TIME = 5;
+    private readonly achievementsStack: Achievement[] = [];
+    private achievementTimer = 0;
+    private nextAchievementAt = 0;
     public entity: Entity = null!;
     public logoImage: HTMLImageElement;
     public scene = Scene.Menu;
@@ -53,9 +58,38 @@ export default class Overlay implements Component {
         this.logoImage.src = 'logo.png';
     }
 
-    public init(entity: Entity): void {
+    public init(entity: Entity) {
         entity.zOrder = Order.Overlay;
         this.entity = entity;
+    }
+
+    public update(dt: number) {
+        if (!this.nextAchievementAt) return;
+
+        this.achievementTimer += dt;
+
+        if (this.achievementTimer > this.nextAchievementAt) {
+            this.achievementsStack.shift();
+            this.achievementTimer = 0;
+            if (!this.achievementsStack[0])
+                this.nextAchievementAt = 0;
+        }
+    }
+
+    public pushAchievement(achievement: Achievement) {
+        this.achievementsStack.push(achievement);
+        this.nextAchievementAt = Overlay.ACHIEVEMENT_TIME;
+        this.achievementTimer = 0;
+    }
+
+    public getAchievement(): Achievement | undefined {
+        return this.achievementsStack[0];
+    }
+
+    /** https://www.desmos.com/Calculator/9th1u5gtpl */
+    public achievementAlpha() {
+        if (!this.nextAchievementAt) return 0;
+        return Math.min(1, this.achievementTimer / 0.1 / this.nextAchievementAt) - Math.max(0, (this.achievementTimer - this.nextAchievementAt * 0.9) / 0.1 / this.nextAchievementAt);
     }
 
     public resetUpgrades() {

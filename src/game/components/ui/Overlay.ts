@@ -23,6 +23,7 @@ export default class OverlayUI implements UI {
                 this.renderEpoch(ctx, ui);
                 break;
         }
+        this.renderAchievement(ctx, ui);
     }
 
     private renderMenu(ctx: CanvasRenderingContext2D, ui: UIContext) {
@@ -115,5 +116,42 @@ export default class OverlayUI implements UI {
         }
 
         this.overlay.startEpoch.render(ctx, ui);
+    }
+
+    private renderAchievement(ctx: CanvasRenderingContext2D, ui: UIContext) {
+        const achievement = this.overlay.getAchievement();
+
+        if (!achievement) return;
+
+        let p = ui.winScale,
+            w = 500 * p,
+            h = 108 * p,
+            x = 20 * p,
+            y = 20 * p;
+
+        ctx.globalAlpha = this.overlay.achievementAlpha();
+
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 16);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fill();
+
+        ctx.font = 24 * p + 'px Ubuntu';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = '#fff';
+        ctx.fillText(achievement.name, x + 16 * p, y + 16 * p);
+        ctx.fillStyle = '#ccc';
+        ctx.font = 16 * p + 'px Ubuntu';
+        ctx.fillText(achievement.description[0], x + 16 * p, y + (24+16+2) * p);
+        ctx.fillText(achievement.description[1], x + 16 * p, y + (24+16+2+16+2) * p);
+
+        if (achievement.reward) {
+            ctx.fillStyle = '#fff';
+            ctx.fillText('Reward: ' + achievement.reward, x + 16 * p, y + (24+16+2+16+2+16+5) * p);
+        }
+
+        ctx.globalAlpha = 1;
     }
 }

@@ -1,3 +1,4 @@
+import Achievement from './Achievement';
 import { Scene } from './components/Overlay';
 import Game from './Game';
 
@@ -5,7 +6,7 @@ export default class Epoch {
     public static readonly EPOCH_LEVEL = 100;
     public multipliers = {
         power: 1, cost: 1, score: 1,
-        time: 1, reset: 1
+        time: 1, reset: 1, speed: 1
     };
     public penetrationChance = 0;
     public points = 0;
@@ -14,10 +15,7 @@ export default class Epoch {
     public endEpoch() {
         const game = Game.instance!;
 
-        if (this.count == 0) {
-            this.multipliers.reset /= 2;
-            alert('TODO Achievement unlocked: First Epoch. Reward: 2x reset speed.');
-        }
+        if (this.count == 0) Achievement.unlock('First Epoch');
 
         this.count += 1;
         this.points += Epoch.calculatePoints(game.level);
