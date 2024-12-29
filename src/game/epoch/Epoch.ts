@@ -1,7 +1,14 @@
+import { Scene } from '../components/Overlay';
 import Game from '../Game';
 
 export default class Epoch {
     public static readonly EPOCH_LEVEL = 100;
+    public multipliers = {
+        power: 1,
+        cost: 1,
+        score: 1,
+        time: 1
+    };
     public points = 0;
 
     public endEpoch() {
@@ -9,7 +16,8 @@ export default class Epoch {
 
         this.points += Epoch.calculatePoints(game.level);
         game.reset();
-        game.overlay.scene;
+        game.overlay.scene = Scene.Epoch;
+        game.planet.shootRockets = false;
     }
 
     public static calculatePoints(level: number): number {

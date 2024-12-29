@@ -16,7 +16,7 @@ export default class Game {
     public readonly explosions: Explosion[] = [];
     public readonly decorations: Decoration[] = [];
     public readonly epoch = new Epoch();
-    public level = 1;
+    public level = 100;
     public score = 0;
 
     public constructor(
@@ -108,7 +108,7 @@ export default class Game {
 
     /** speedhack */
     public getTimeSpeed(): number {
-        return 5;
+        return 5 * this.epoch.multipliers.time;
     }
 
     public reset() {

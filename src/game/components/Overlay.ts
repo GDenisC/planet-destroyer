@@ -1,3 +1,9 @@
+import CostMultiplier from '../buttons/epoch/CostMultiplier';
+import EpochUpgrade from '../buttons/epoch/EpochUpgrade';
+import PowerMultiplier from '../buttons/epoch/PowerMultiplier';
+import ScoreMultiplier from '../buttons/epoch/ScoreMultiplier';
+import TimeMultiplier from '../buttons/epoch/TimeMultiplier';
+import NewEpochBtn from '../buttons/NewEpochBtn';
 import PlayBtn from '../buttons/PlayBtn';
 import GravityUpgrade from '../buttons/upgrade/GravityUpgrade';
 import LessIntervalUpgrade from '../buttons/upgrade/LessIntervalUpgrade';
@@ -26,7 +32,15 @@ export default class Overlay implements Component {
         new GravityUpgrade()
     ];
 
+    public readonly epochUpgrades: EpochUpgrade[] = [
+        new PowerMultiplier(),
+        new ScoreMultiplier(),
+        new CostMultiplier(),
+        new TimeMultiplier()
+    ]
+
     public readonly play = new PlayBtn();
+    public readonly newEpoch = new NewEpochBtn();
 
     public constructor() {
         this.logoImage = new Image();

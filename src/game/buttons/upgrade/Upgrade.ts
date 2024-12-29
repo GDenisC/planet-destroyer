@@ -69,7 +69,7 @@ export default abstract class Upgrade extends Button {
 
         if (game.score < this.cost || this.level >= this.maxLevel) return;
         game.score -= this.cost;
-        this.onPurchase(Game.instance!);
+        this.onPurchase(game);
         this.level += 1;
         this.cachedDescription = this.getDescription();
         if (this.level == this.maxLevel) this.text = 'MAX';
