@@ -8,9 +8,16 @@ import Entity from '../Entity';
 import { Order } from '../Order';
 import Component from './Component';
 
+export const enum Scene {
+    Menu,
+    Game,
+    Epoch
+}
+
 export default class Overlay implements Component {
     public entity: Entity = null!;
     public logoImage: HTMLImageElement;
+    public scene = Scene.Menu;
 
     public readonly upgrades: Upgrade[] = [
         new PowerUpgrade(),

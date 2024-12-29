@@ -1,6 +1,7 @@
 import Application from '../Application';
 import Decoration from './components/Decoration';
 import Explosion from './components/Explosion';
+import Overlay from './components/Overlay';
 import Planet from './components/Planet';
 import PlanetHit from './components/PlanetHit';
 import Rocket from './components/Rocket';
@@ -20,6 +21,7 @@ export default class Game {
 
     public constructor(
         public readonly app: Application,
+        public readonly overlay: Overlay,
         public readonly planet: Planet
     ) {
         Game.instance = this;
@@ -106,6 +108,13 @@ export default class Game {
 
     /** speedhack */
     public getTimeSpeed(): number {
-        return 1;
+        return 5;
+    }
+
+    public reset() {
+        this.score = 0;
+        this.level = 1;
+        this.clearAll();
+        this.planet.reset();
     }
 }

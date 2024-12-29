@@ -199,4 +199,14 @@ export default class Planet implements Component {
             deco.angle += radians;
         }
     }
+
+    public reset() {
+        this.scale = 1;
+        this.destroyed = false;
+        this.deathTime = 0;
+        this.app.shakePower = 0;
+        this.updateColliders();
+        this.updatePalette();
+        this.spawnDecorations();
+    }
 }

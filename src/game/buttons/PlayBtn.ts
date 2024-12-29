@@ -1,4 +1,5 @@
 import Button from '../Button';
+import { Scene } from '../components/Overlay';
 import Game from '../Game';
 
 export default class PlayBtn extends Button {
@@ -20,7 +21,8 @@ export default class PlayBtn extends Button {
     }
 
     public onClick(): void {
-        Game.instance!.planet.shootRockets = true;
-        this.hidden = true;
+        const game = Game.instance!;
+        game.planet.shootRockets = true;
+        game.overlay.scene = Scene.Game;
     }
 }

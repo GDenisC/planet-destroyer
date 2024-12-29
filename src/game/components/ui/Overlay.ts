@@ -1,6 +1,6 @@
 import Entity from '../../Entity';
 import Game from '../../Game';
-import Overlay from '../Overlay';
+import Overlay, { Scene } from '../Overlay';
 import { UI, UIContext } from './UI';
 
 export default class OverlayUI implements UI {
@@ -11,26 +11,37 @@ export default class OverlayUI implements UI {
     }
 
     public render(ctx: CanvasRenderingContext2D, ui: UIContext) {
-        let overlay = this.overlay,
-            game = Game.instance!;
+        switch (this.overlay.scene) {
+            case Scene.Menu:
+                this.renderMenu(ctx, ui);
+                break;
+            case Scene.Game:
+                this.renderGame(ctx, ui);
+                break;
+            case Scene.Epoch:
+                break;
+        }
+    }
 
-        if (!overlay.play.hidden) {
-            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    private renderMenu(ctx: CanvasRenderingContext2D, ui: UIContext) {
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
             ctx.fillRect(0, 0, ui.width, ui.height);
 
-            let logo = overlay.logoImage,
-                logoSize = 400 * ui.winScale;
+        let logo = this.overlay.logoImage,
+            logoSize = 400 * ui.winScale;
 
-            if (logo.complete) ctx.drawImage(
-                logo,
-                ui.x - logoSize / 2,
-                ui.y - logoSize / 2 - 150 * ui.winScale,
-                logoSize, logoSize
-            );
+        if (logo.complete) ctx.drawImage(
+            logo,
+            ui.x - logoSize / 2,
+            ui.y - logoSize / 2 - 150 * ui.winScale,
+            logoSize, logoSize
+        );
 
-            overlay.play.render(ctx, ui);
-            return;
-        }
+        this.overlay.play.render(ctx, ui);
+    }
+
+    private renderGame(ctx: CanvasRenderingContext2D, ui: UIContext) {
+        const game = Game.instance!;
 
         ctx.fillStyle = 'rgba(0,0,0,0.5)';
         ctx.fillRect(0, 0, ui.width, 40 * ui.winScale);
@@ -45,13 +56,8 @@ export default class OverlayUI implements UI {
         ctx.font = 36 * ui.winScale + 'px Ubuntu';
         ctx.fillText('Level ' + game.level, ui.width / 2, 72 * ui.winScale);
 
-        //overlay.upgrades.render(
-        //    ctx, ui, 'Upgrades', 18, '#fff',
-        //    4, 'hsl(199, 64%, 71%)', 'hsl(200, 100%, 86%)', 'hsl(199, 53%, 76%)', 22
-        //);
-
-        for (let i = 0, l = overlay.upgrades.length; i < l; ++i) {
-            let upgrade = overlay.upgrades[i];
+        for (let i = 0, l = this.overlay.upgrades.length; i < l; ++i) {
+            let upgrade = this.overlay.upgrades[i];
             upgrade.options.offsetY = -40;
             upgrade.options.offsetX = 180 + i * 340;
             upgrade.render(ctx, ui);
