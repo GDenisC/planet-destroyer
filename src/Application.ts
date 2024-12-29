@@ -49,7 +49,7 @@ export default class Application {
 
         this.setCursorStyle(CursorStyle.Default);
 
-        for (let entity of this.entities) {
+        for (let entity of Array.from(this.entities)) {
             if (entity.destroyed) continue;
             let entityBase = entity.getComponent('base'),
                 entityUI = entity.getComponent('ui');

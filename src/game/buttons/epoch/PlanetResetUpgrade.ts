@@ -1,17 +1,18 @@
+import Planet from '../../components/Planet';
 import Game from '../../Game';
 import EpochUpgrade from './EpochUpgrade';
 
 export default class PlanetResetUpgrade extends EpochUpgrade {
     public constructor() {
-        super('Faster Reset', 'x0.9', 1);
+        super('Faster Reset', 'x0.8', 1);
     }
 
     public onPurchase(game: Game): void {
-        game.epoch.multipliers.reset *= 0.9;
+        game.epoch.multipliers.reset *= 0.8;
         this.cost *= 2;
     }
 
     public getDescription(): string {
-        return 'Decrease planet\'s reset by 10% each upgrade. Current reset multiplier is ' + Game.instance!.epoch.multipliers.reset.toFixed(3)
+        return 'Decrease planet\'s reset by 20% each upgrade. Current reset time is ' + (Planet.DEATH_TIME * Game.instance!.epoch.multipliers.reset * 1000).toFixed(0) + 'ms. Slightly buffs rockets speed';
     }
 }

@@ -14,6 +14,11 @@ export default class Epoch {
     public endEpoch() {
         const game = Game.instance!;
 
+        if (this.count == 0) {
+            this.multipliers.reset /= 2;
+            alert('TODO Achievement unlocked: First Epoch. Reward: 2x reset speed.');
+        }
+
         this.count += 1;
         this.points += Epoch.calculatePoints(game.level);
         game.reset();

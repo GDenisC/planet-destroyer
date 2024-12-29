@@ -33,6 +33,6 @@ export default class Explosion implements Component {
     }
 
     public alpha() {
-        return Math.max(0, 1 - this.timer / this.explosionTime);
+        return Math.max(0, (1 - this.timer / this.explosionTime) / Math.max(1, Math.log(1 + this.size / Planet.SIZE / Game.instance!.planet.scale)));
     }
 }

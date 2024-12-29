@@ -1,6 +1,7 @@
 import CostMultiplier from '../buttons/epoch/CostMultiplier';
 import EpochUpgrade from '../buttons/epoch/EpochUpgrade';
 import PenetrationChance from '../buttons/epoch/PenetrationChance';
+import PlanetResetUpgrade from '../buttons/epoch/PlanetResetUpgrade';
 import PowerMultiplier from '../buttons/epoch/PowerMultiplier';
 import ScoreMultiplier from '../buttons/epoch/ScoreMultiplier';
 import TimeMultiplier from '../buttons/epoch/TimeMultiplier';
@@ -39,7 +40,8 @@ export default class Overlay implements Component {
         new ScoreMultiplier(),
         new CostMultiplier(),
         new TimeMultiplier(),
-        new PenetrationChance()
+        new PenetrationChance(),
+        new PlanetResetUpgrade()
     ]
 
     public readonly play = new PlayBtn();

@@ -22,7 +22,7 @@ interface PlanetLayer {
 
 export default class Planet implements Component {
     public static readonly SIZE = 250;
-    public static readonly DEATH_TIME = 1;
+    public static readonly DEATH_TIME = 0.75;
     public app: Application = null!;
     public scale = 1;
     public destroyed = false;
@@ -171,7 +171,7 @@ export default class Planet implements Component {
     public getTimeMultiplier(): number {
         const game = Game.instance!,
             reset = game.epoch.multipliers.reset;
-        return Math.max(0, Planet.DEATH_TIME * reset  - this.deathTime) / Planet.DEATH_TIME * reset * game.getTimeSpeed();
+        return Math.max(0, Planet.DEATH_TIME - this.deathTime / reset) / Planet.DEATH_TIME * game.getTimeSpeed();
     }
 
     public rotate(radians: number) {

@@ -6,7 +6,10 @@ import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
 import Component from './Component';
+import Explosion from './Explosion';
+import Planet from './Planet';
 import PlanetHit from './PlanetHit';
+import ExplosionUI from './ui/Explosion';
 
 const TAU = Math.PI * 2;
 
@@ -25,6 +28,8 @@ export default class Rocket implements Component {
     public collider = new Collider();
     public angle: number;
     public penetration = 1;
+    public trailTimer = 0;
+    public trailSpawnAtTime = 0;
 
     public constructor(
         public x: number,
@@ -34,8 +39,9 @@ export default class Rocket implements Component {
         public speed: number,
         public gravity: number
     ) {
-        this.angle = Math.atan2(this.y, this.x) - TAU + Math.random() * TAU / Game.instance!.planet.scale;
-        Game.instance!.rockets.push(this);
+        const game = Game.instance!;
+        this.angle = Math.atan2(this.y, this.x) - Math.PI + Math.random() * TAU / game.planet.scale / game.epoch.multipliers.reset;
+        game.rockets.push(this);
     }
 
     public init(entity: Entity): void {
@@ -47,54 +53,64 @@ export default class Rocket implements Component {
     public update(dt: number) {
         const game = Game.instance!,
             planet = game.planet,
-            time = planet.getTimeMultiplier();
+            time = planet.getTimeMultiplier(),
+            dist = Math.sqrt(this.x * this.x + this.y * this.y);
 
-        this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time));
+        this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time * dist / Planet.SIZE));
 
-        if (Number.isNaN(this.angle)) this.angle = Math.random() * TAU;
-
-        const speed = dt * 500 * this.speed / planet.scale * time;
+        const speed = Math.min(dist * planet.scale, dt * 500 * this.speed / planet.scale * time * (1 + 1 / game.epoch.multipliers.reset));
 
         this.x += Math.cos(this.angle) * speed;
         this.y += Math.sin(this.angle) * speed;
 
         this.updateCollider();
 
-        if (planet.intersects(this.collider)) {
-            let timeSpeed = game.getTimeSpeed(),
-                limit = 10 * timeSpeed,
-                multipliers = game.epoch.multipliers;
+        if (planet.intersects(this.collider))
+            this.collideWithPlanet(game, planet, speed);
 
-            do {
-                this.x -= Math.cos(this.angle) * speed;
-                this.y -= Math.sin(this.angle) * speed;
-                this.updateCollider();
-                limit -= 1;
-            } while (planet.intersects(this.collider) && limit > 0);
+        this.trailTimer += dt * time * this.speed;
 
-            limit = 10 * timeSpeed;
-            while (!planet.intersects(this.collider) && limit > 0) {
-                this.x += Math.cos(this.angle) * speed / 10 / timeSpeed;
-                this.y += Math.sin(this.angle) * speed / 10 / timeSpeed;
-                this.updateCollider();
-                limit -= 1;
-            }
+        if (this.trailTimer > this.trailSpawnAtTime) {
+            this.app.spawn({ base: new Explosion(planet, this.x, this.y, this.size * (6 + Math.random()) / 10, 0.33), ui: new ExplosionUI() });
+            this.trailSpawnAtTime = Math.random() / 30;
+            this.trailTimer = 0;
+        }
+    }
 
-            let dist = Math.sqrt(this.x * this.x + this.y * this.y),
-                gravityPower = 1 + (Math.pow(2, this.gravity) - 1) / dist
+    private collideWithPlanet(game: Game, planet: Planet, speed: number) {
+        let timeSpeed = game.getTimeSpeed(),
+            limit = 10 * timeSpeed,
+            multipliers = game.epoch.multipliers;
 
-            game.score += this.damage * gravityPower / 10 * multipliers.score;
-            this.app.spawn({
-                base: new PlanetHit(this.x, this.y, this.damage * gravityPower * multipliers.power),
-                ui: new PlanetHitUI()
-            });
+        do {
+            this.x -= Math.cos(this.angle) * speed;
+            this.y -= Math.sin(this.angle) * speed;
+            this.updateCollider();
+            limit -= 1;
+        } while (planet.intersects(this.collider) && limit > 0);
 
-            if (game.epoch.penetrationChance > Math.random()) this.penetration += 1;
+        limit = 10 * timeSpeed;
+        while (!planet.intersects(this.collider) && limit > 0) {
+            this.x += Math.cos(this.angle) * speed / 10 / timeSpeed;
+            this.y += Math.sin(this.angle) * speed / 10 / timeSpeed;
+            this.updateCollider();
+            limit -= 1;
+        }
 
-            if (--this.penetration <= 0) {
-                this.entity.destroy();
-                game.rockets.splice(game.rockets.indexOf(this), 1);
-            }
+        let dist = Math.sqrt(this.x * this.x + this.y * this.y),
+            gravityPower = 1 + (Math.pow(2, this.gravity) - 1) / dist
+
+        game.score += this.damage * gravityPower / 10 * multipliers.score;
+        this.app.spawn({
+            base: new PlanetHit(this.x, this.y, this.damage * gravityPower * multipliers.power),
+            ui: new PlanetHitUI()
+        });
+
+        if (game.epoch.penetrationChance > Math.random()) this.penetration += 1;
+
+        if (--this.penetration <= 0) {
+            this.entity.destroy();
+            game.rockets.splice(game.rockets.indexOf(this), 1);
         }
     }
 
