@@ -6,7 +6,8 @@ export default class Epoch {
     public static readonly EPOCH_LEVEL = 100;
     public multipliers = {
         power: 1, cost: 1, score: 1,
-        time: 1, reset: 1, speed: 1
+        time: 1, reset: 1, speed: 1,
+        epoch: 1
     };
     public penetrationChance = 0;
     public points = 0;
@@ -18,14 +19,16 @@ export default class Epoch {
         if (this.count == 0) Achievement.unlock('First Epoch');
 
         this.count += 1;
-        this.points += Epoch.calculatePoints(game.level);
+        this.points += this.calculatePoints(game.level);
         game.reset();
         game.overlay.scene = Scene.Epoch;
         game.planet.shootRockets = false;
+
+        if (this.points > 1_000_000) Achievement.unlock('Evolution');
     }
 
-    public static calculatePoints(level: number): number {
-        return Math.round(Math.pow(level / this.EPOCH_LEVEL, 2 + level / 1000));
+    public calculatePoints(level: number): number {
+        return Math.round(Math.pow(level / Epoch.EPOCH_LEVEL, 2 + level / 1000) * this.multipliers.epoch);
     }
 
     public static calculateProgress(level: number): number {

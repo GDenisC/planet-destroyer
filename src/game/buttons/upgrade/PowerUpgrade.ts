@@ -14,7 +14,7 @@ export default class PowerUpgrade extends Upgrade {
     public getDescription(): string[] {
         return [
             '2x rocket power',
-            'Current rocket power: ' + Game.instance!.planet.rocketPower,
+            'Current rocket power: ' + Game.format(Game.instance!.planet.rocketPower)
         ];
     }
 }

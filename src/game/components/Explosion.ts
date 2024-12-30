@@ -23,8 +23,8 @@ export default class Explosion implements Component {
     }
 
     public update(dt: number) {
-        dt *= this.planet.getTimeMultiplier();
-        this.timer += dt;
+        this.timer += dt * this.planet.getTimeMultiplier();
+
         if (this.timer > this.explosionTime) {
             this.entity.destroy();
             let explosions = Game.instance!.explosions;
@@ -33,6 +33,6 @@ export default class Explosion implements Component {
     }
 
     public alpha() {
-        return Math.max(0, (1 - this.timer / this.explosionTime) / Math.max(1, Math.log(1 + this.size / Planet.SIZE / Game.instance!.planet.scale)));
+        return Math.max(0, (1 - this.timer / this.explosionTime) / Math.max(1, Math.log(1 + this.size * 10 / Planet.SIZE / Game.instance!.planet.scale)));
     }
 }

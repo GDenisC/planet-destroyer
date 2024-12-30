@@ -55,7 +55,7 @@ export default abstract class Upgrade extends Button {
 
         ctx.font = 18 * ui.winScale + 'px Ubuntu';
         ctx.fillStyle = '#ddd';
-        ctx.fillText(this.level == this.maxLevel ? 'MAX' : 'Cost: ' + this.cost.toFixed(0), measure.x + textOffset, measure.y - descLength - 28 * ui.winScale);
+        ctx.fillText(this.level == this.maxLevel ? 'MAX' : 'Cost: ' + Game.format(this.cost), measure.x + textOffset, measure.y - descLength - 28 * ui.winScale);
 
         ctx.fillStyle = '#ddd';
         ctx.font = 12 * ui.winScale + 'px Ubuntu';

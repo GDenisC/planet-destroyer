@@ -1,4 +1,5 @@
 import Application from '../../Application';
+import Achievement from '../Achievement';
 import Collider from '../Collider';
 import DecorationUI from '../components/ui/Decoration';
 import Entity from '../Entity';
@@ -73,24 +74,13 @@ export default class Planet implements Component {
 
         this.app.shakePower = 10 * time / timeSpeed;
 
-        if (this.deathTime > Planet.DEATH_TIME * game.epoch.multipliers.reset) {
-            game.score += Math.pow(75 * this.scale, 1.1);
-            game.clearAll();
-            this.scale *= Math.pow(1.125, 2 / this.scale);
-            game.level += 1;
-            this.updateColliders();
-            this.destroyed = false;
-            this.deathTime = 0;
-            this.app.shakePower = 0;
-            this.updatePalette();
-            this.spawnDecorations();
-            this.rocketTime = this.rocketInterval;
-        }
+        if (this.deathTime > Planet.DEATH_TIME * game.epoch.multipliers.reset)
+            this.respawn();
     }
 
     public respawn() {
         let game = Game.instance!;
-        game.score += Math.pow(50 * game.level, 1.1);
+        game.score += Math.pow(50 * game.level, 1.1)// * game.epoch.multipliers.score;
         game.clearAll();
         this.scale *= Math.pow(1.125, 2 / Math.sqrt(this.scale));
         game.level += 1;
@@ -101,6 +91,15 @@ export default class Planet implements Component {
         this.updatePalette();
         this.spawnDecorations();
         this.rocketTime = this.rocketInterval;
+
+        // lets check it only when planet is destroyed
+        if (game.score > 1_000_000) Achievement.unlock('One Million');
+
+        switch (game.level) {
+            case 10: Achievement.unlock('Level 10'); break;
+            case 1000: Achievement.unlock('Level 1000'); break;
+            case 10_000: Achievement.unlock('The End'); break;
+        }
     }
 
     public updatePalette() {
@@ -170,8 +169,13 @@ export default class Planet implements Component {
 
     public getTimeMultiplier(): number {
         const game = Game.instance!,
-            reset = game.epoch.multipliers.reset;
-        return Math.max(0, Planet.DEATH_TIME - this.deathTime / reset) / Planet.DEATH_TIME * game.getTimeSpeed();
+            time = game.getTimeSpeed();
+
+        if (this.deathTime == 0) return time;
+
+        const reset = game.epoch.multipliers.reset;
+
+        return Math.max(0, Planet.DEATH_TIME - this.deathTime / reset) / 1.5 / Planet.DEATH_TIME * time;
     }
 
     public rotate(radians: number) {

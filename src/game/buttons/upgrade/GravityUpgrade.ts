@@ -16,7 +16,7 @@ export default class GravityUpgrade extends Upgrade {
             '+1 rocket gravity per upgrade',
             'to the planet. Grows geometrically!',
             'Rockets will damage more if they are closer',
-            'Current rocket gravity: ' + Game.instance!.planet.rocketGravity,
+            'Current rocket gravity: ' + Game.instance!.planet.rocketGravity.toFixed(0)
         ];
     }
 }

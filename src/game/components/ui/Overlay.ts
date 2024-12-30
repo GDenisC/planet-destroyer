@@ -55,7 +55,7 @@ export default class OverlayUI implements UI {
         ctx.textBaseline = 'middle';
         ctx.fillText('PLANET DESTROYER', 7 * ui.winScale, 20 * ui.winScale);
         ctx.textAlign = 'center';
-        ctx.fillText(game.score.toFixed(0) + ' score', ui.width / 2, 20 * ui.winScale);
+        ctx.fillText(Game.format(game.score) + ' score', ui.width / 2, 20 * ui.winScale);
         ctx.font = 36 * ui.winScale + 'px Ubuntu';
         ctx.fillText('Level ' + game.level, ui.width / 2, 72 * ui.winScale);
 
@@ -89,7 +89,7 @@ export default class OverlayUI implements UI {
             return;
         }
 
-        this.overlay.newEpoch.text = Epoch.calculatePoints(game.level) + ' EP GAIN';
+        this.overlay.newEpoch.text = Game.format(game.epoch.calculatePoints(game.level)) + ' EP GAIN';
         this.overlay.newEpoch.render(ctx, ui);
     }
 
@@ -103,7 +103,7 @@ export default class OverlayUI implements UI {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = 'rgb(218,255,55)';
-        ctx.fillText(game.epoch.points + ' Epoch Points', ui.width / 2, 36 * ui.winScale);
+        ctx.fillText(Game.format(game.epoch.points) + ' Epoch Points', ui.width / 2, 36 * ui.winScale);
 
         ctx.font = 24 * ui.winScale + 'px Ubuntu';
         ctx.fillStyle = 'rgb(127, 148, 33)';
@@ -125,7 +125,7 @@ export default class OverlayUI implements UI {
 
         let p = ui.winScale,
             w = 500 * p,
-            h = 108 * p,
+            h = 108 * p - (achievement.reward ? 0 : (16+5) * p),
             x = 20 * p,
             y = 20 * p;
 

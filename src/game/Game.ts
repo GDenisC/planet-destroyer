@@ -16,7 +16,7 @@ export default class Game {
     public readonly explosions: Explosion[] = [];
     public readonly decorations: Decoration[] = [];
     public readonly epoch = new Epoch();
-    public level = 100;
+    public level = 1;
     public score = 0;
 
     public constructor(
@@ -117,5 +117,11 @@ export default class Game {
         this.clearAll();
         this.planet.reset();
         this.overlay.resetUpgrades();
+    }
+
+    public static format(n: number, digits = 0): string {
+        if (n > 1e6)
+            return n.toExponential(2);
+        return n.toFixed(digits);
     }
 }
