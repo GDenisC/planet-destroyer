@@ -22,6 +22,10 @@ function angleLerp(a0: number,a1: number,t: number) {
     return a0 + shortAngleDist(a0,a1)*t;
 }
 
+function distance(x: number, y: number) {
+    return Math.sqrt(x * x + y * y);
+}
+
 export default class Rocket implements Component {
     public entity: Entity = null!;
     public app: Application = null!;
@@ -59,7 +63,7 @@ export default class Rocket implements Component {
 
         let speed = dt * 500 * this.speed / planet.scale * time;
 
-        if (Math.sign(this.x - speed) != Math.sign(this.x) || Math.sign(this.y - speed) != Math.sign(this.y)) {
+        if (distance(this.x, this.y) <= speed * planet.scale) {
             // this scope fixes 1e+308 speed
             this.x = 0;
             this.y = 0;

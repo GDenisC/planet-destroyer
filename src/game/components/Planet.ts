@@ -136,7 +136,7 @@ export default class Planet implements Component {
         while (height > middleRadius) {
             this.layers.push({ radius: height / this.scale, color: '#' + layersPalette[i % layersPalette.length] });
             if (i == 0) height -= 15 * this.scale;
-            else height -= 5 * this.scale + 50 * i + 40 * i * Math.random();
+            else height -= 5 * this.scale + 50 * i + 40 * i * Math.random() + 5 * this.scale * Math.random();
             i += 1;
         }
     }
