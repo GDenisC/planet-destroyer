@@ -7,15 +7,15 @@ export default class SpeedUpgrade extends Upgrade {
     }
 
     public onPurchase(game: Game): void {
-        if (this.level % 10 == 9) this.cost += this.cost * 9 * game.epoch.multipliers.cost;
-        game.planet.rocketSpeed *= 2;
+        if (this.level % 10 == 9) this.cost += this.cost * game.epoch.multipliers.cost;
+        game.planet.rocketSpeed = Math.pow(game.planet.rocketSpeed * 1.45, 1.01);
         this.cost += this.cost * game.epoch.multipliers.cost;
     }
 
     public getDescription(): string[] {
         return [
-            '2x rocket speed',
-            'Current rocket speed: ' + Game.format(Game.instance!.planet.rocketSpeed)
+            'x1.45 rocket speed (^1.01)',
+            'Current rocket speed: ' + Game.format(Game.instance!.planet.rocketSpeed, 1)
         ];
     }
 }

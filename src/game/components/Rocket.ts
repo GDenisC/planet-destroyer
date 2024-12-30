@@ -64,7 +64,7 @@ export default class Rocket implements Component {
         let speed = dt * 500 * this.speed / planet.scale * time,
             dist = distance(this.x, this.y);
 
-        if (dist <= speed * planet.scale || dist > 1e6) {
+        if (dist < speed) {
             // this scope fixes 1e+308 speed
             this.x = 0;
             this.y = 0;
@@ -82,7 +82,10 @@ export default class Rocket implements Component {
         this.trailTimer += dt * time * this.speed;
 
         if (this.trailTimer > this.trailSpawnAtTime) {
-            this.app.spawn({ base: new Explosion(planet, this.x, this.y, this.size * (6 + Math.random()) / 10, 0.33), ui: new ExplosionUI() });
+            let cos = Math.cos(this.angle),
+                sin = Math.sin(this.angle),
+                width = this.size * 2;
+            this.app.spawn({ base: new Explosion(planet, this.x - cos * width, this.y - sin * width, this.size * (6 + Math.random()) / 10 * planet.scale, 0.33), ui: new ExplosionUI() });
             this.trailSpawnAtTime = Math.random() / 30;
             this.trailTimer = 0;
         }
@@ -90,19 +93,21 @@ export default class Rocket implements Component {
 
     private collideWithPlanet(game: Game, planet: Planet, speed: number) {
         let limit = 1_000,
-            multipliers = game.epoch.multipliers;
+            multipliers = game.epoch.multipliers,
+            cos = Math.cos(this.angle),
+            sin = Math.sin(this.angle);
 
         // get normal position
 
         do {
-            this.x -= Math.cos(this.angle) * speed / planet.scale;
-            this.y -= Math.sin(this.angle) * speed / planet.scale;
+            this.x -= cos * speed / planet.scale;
+            this.y -= sin * speed / planet.scale;
             this.updateCollider();
         } while (planet.intersects(this.collider) && limit-- > 0);
 
         while (!planet.intersects(this.collider) && limit-- > 0) {
-            this.x += Math.cos(this.angle) * this.damage / 4 / planet.scale;
-            this.y += Math.sin(this.angle) * this.damage / 4 / planet.scale;
+            this.x += cos * this.damage / 10 / planet.scale;
+            this.y += sin * this.damage / 10 / planet.scale;
             this.updateCollider();
         }
 

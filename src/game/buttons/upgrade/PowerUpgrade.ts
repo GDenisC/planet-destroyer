@@ -3,17 +3,17 @@ import Upgrade from './Upgrade';
 
 export default class PowerUpgrade extends Upgrade {
     public constructor() {
-        super('Power', 100, 10);
+        super('Power', 100, 100);
     }
 
     public onPurchase(game: Game): void {
-        game.planet.rocketPower *= 2;
-        this.cost += this.cost * game.epoch.multipliers.cost;
+        game.planet.rocketPower *= 1.1;
+        this.cost += this.cost / 5 * game.epoch.multipliers.cost;
     }
 
     public getDescription(): string[] {
         return [
-            '2x rocket power',
+            'x1.1 rocket power',
             'Current rocket power: ' + Game.format(Game.instance!.planet.rocketPower)
         ];
     }
