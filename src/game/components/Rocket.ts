@@ -61,9 +61,10 @@ export default class Rocket implements Component {
 
         this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time));
 
-        let speed = dt * 500 * this.speed / planet.scale * time;
+        let speed = dt * 500 * this.speed / planet.scale * time,
+            dist = distance(this.x, this.y);
 
-        if (distance(this.x, this.y) <= speed * planet.scale) {
+        if (dist <= speed * planet.scale || dist > 1e6) {
             // this scope fixes 1e+308 speed
             this.x = 0;
             this.y = 0;
