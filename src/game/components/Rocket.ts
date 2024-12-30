@@ -101,8 +101,8 @@ export default class Rocket implements Component {
         } while (planet.intersects(this.collider) && limit-- > 0);
 
         while (!planet.intersects(this.collider) && limit-- > 0) {
-            this.x += Math.cos(this.angle) * this.damage / 2 / planet.scale;
-            this.y += Math.sin(this.angle) * this.damage / 2 / planet.scale;
+            this.x += Math.cos(this.angle) * this.damage / 4 / planet.scale;
+            this.y += Math.sin(this.angle) * this.damage / 4 / planet.scale;
             this.updateCollider();
         }
 
@@ -136,7 +136,7 @@ export default class Rocket implements Component {
         const rocket = new Rocket(
             Math.cos(angle) * 1200,
             Math.sin(angle) * 1200,
-            damage / 8, damage, speed, gravity
+            10, damage, speed, gravity
         );
 
         Game.instance!.app.spawn({ base: rocket, ui: new RocketUI() });

@@ -1,5 +1,4 @@
 import Entity from '../../Entity';
-import Game from '../../Game';
 import Rocket from '../Rocket';
 import { UI, UIContext } from './UI';
 
@@ -11,8 +10,7 @@ export default class PocketUI implements UI {
     }
 
     public render(ctx: CanvasRenderingContext2D, ui: UIContext): void {
-        let scale = Game.instance!.planet.scale,
-            size = Math.max(1, this.rocket.size / scale) * ui.winScale;
+        let size = this.rocket.size * ui.winScale;
 
         ctx.translate(ui.x + this.rocket.x * ui.winScale, ui.y + this.rocket.y * ui.winScale);
         ctx.rotate(this.rocket.angle);
