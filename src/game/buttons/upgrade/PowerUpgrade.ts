@@ -8,7 +8,7 @@ export default class PowerUpgrade extends Upgrade {
 
     public onPurchase(game: Game): void {
         game.planet.rocketPower *= 2;
-        this.cost *= 2 * game.epoch.multipliers.cost;
+        this.cost += this.cost * game.epoch.multipliers.cost;
     }
 
     public getDescription(): string[] {

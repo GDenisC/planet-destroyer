@@ -14,7 +14,7 @@ export default class PocketUI implements UI {
         let scale = Game.instance!.planet.scale,
             size = Math.max(1, this.rocket.size / scale) * ui.winScale;
 
-        ctx.translate(ui.x + this.rocket.x * ui. winScale, ui.y + this.rocket.y * ui.winScale);
+        ctx.translate(ui.x + this.rocket.x * ui.winScale, ui.y + this.rocket.y * ui.winScale);
         ctx.rotate(this.rocket.angle);
 
         ctx.beginPath();

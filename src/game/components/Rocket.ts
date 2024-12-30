@@ -53,15 +53,21 @@ export default class Rocket implements Component {
     public update(dt: number) {
         const game = Game.instance!,
             planet = game.planet,
-            time = planet.getTimeMultiplier(),
-            dist = Math.sqrt(this.x * this.x + this.y * this.y);
+            time = planet.getTimeMultiplier()
 
-        this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time * dist / Planet.SIZE));
+        this.angle = angleLerp(this.angle, Math.atan2(this.y, this.x) - Math.PI, Math.min(1, dt * this.speed * time));
 
-        const speed = Math.min(dist * planet.scale, dt * 500 * this.speed / planet.scale * time * game.epoch.multipliers.speed);
+        let speed = dt * 500 * this.speed / planet.scale * time;
 
-        this.x += Math.cos(this.angle) * speed;
-        this.y += Math.sin(this.angle) * speed;
+        if (Math.sign(this.x - speed) != Math.sign(this.x) || Math.sign(this.y - speed) != Math.sign(this.y)) {
+            // this scope fixes 1e+308 speed
+            this.x = 0;
+            this.y = 0;
+            speed = Planet.SIZE * planet.scale;
+        } else {
+            this.x += Math.cos(this.angle) * speed;
+            this.y += Math.sin(this.angle) * speed;
+        }
 
         this.updateCollider();
 
@@ -78,26 +84,26 @@ export default class Rocket implements Component {
     }
 
     private collideWithPlanet(game: Game, planet: Planet, speed: number) {
-        let timeSpeed = game.getTimeSpeed(),
-            limit = 10 * timeSpeed,
+        let limit = 1_000,
             multipliers = game.epoch.multipliers;
 
-        do {
-            this.x -= Math.cos(this.angle) * speed;
-            this.y -= Math.sin(this.angle) * speed;
-            this.updateCollider();
-            limit -= 1;
-        } while (planet.intersects(this.collider) && limit > 0);
+        // get normal position
 
-        limit = 10 * timeSpeed;
-        while (!planet.intersects(this.collider) && limit > 0) {
-            this.x += Math.cos(this.angle) * speed / 10 / timeSpeed;
-            this.y += Math.sin(this.angle) * speed / 10 / timeSpeed;
+        do {
+            this.x -= Math.cos(this.angle) * speed / planet.scale;
+            this.y -= Math.sin(this.angle) * speed / planet.scale;
             this.updateCollider();
-            limit -= 1;
+        } while (planet.intersects(this.collider) && limit-- > 0);
+
+        while (!planet.intersects(this.collider) && limit-- > 0) {
+            this.x += Math.cos(this.angle) * this.damage / 2 / planet.scale;
+            this.y += Math.sin(this.angle) * this.damage / 2 / planet.scale;
+            this.updateCollider();
         }
 
-        let dist = Math.sqrt(this.x * this.x + this.y * this.y),
+        // explosion
+
+        let dist = Math.sqrt(this.x * this.x + this.y * this.y) + 1, // + 1 is NaN Fix
             gravityPower = 1 + (Math.pow(2, this.gravity) - 1) / dist
 
         game.score += this.damage * gravityPower / 10 * multipliers.score;
@@ -115,7 +121,8 @@ export default class Rocket implements Component {
     }
 
     private updateCollider() {
-        this.collider.update({ x: this.x, y: this.y, radius: this.size / Game.instance!.planet.scale });
+        let scale = Game.instance!.planet.scale;
+        this.collider.update({ x: this.x, y: this.y, radius: this.size / scale });
     }
 
     public static spawnOnOrbit(damage: number, speed: number, gravity: number) {

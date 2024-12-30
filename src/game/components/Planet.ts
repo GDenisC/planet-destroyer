@@ -60,7 +60,7 @@ export default class Planet implements Component {
             if (this.rocketTime > this.rocketInterval) {
                 let amount = Math.floor(this.rocketTime / this.rocketInterval);
                 for (;amount;--amount) {
-                    Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed, this.rocketGravity);
+                    Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed * game.epoch.multipliers.speed, this.rocketGravity);
                 }
                 this.rocketTime = 0;
             }
@@ -80,7 +80,7 @@ export default class Planet implements Component {
 
     public respawn() {
         let game = Game.instance!;
-        game.score += Math.pow(50 * game.level, 1.1)// * game.epoch.multipliers.score;
+        game.score += Math.pow(50 * game.level, 1.1) * game.epoch.multipliers.score;
         game.clearAll();
         this.scale *= Math.pow(1.125, 2 / Math.sqrt(this.scale));
         game.level += 1;

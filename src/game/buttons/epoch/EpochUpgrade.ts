@@ -48,7 +48,7 @@ export default abstract class EpochUpgrade extends Button {
 
         ctx.font = 24 * ui.winScale + 'px Ubuntu';
         ctx.textAlign = 'right';
-        ctx.fillText('Cost ' + this.cost.toFixed(0) + ' EP', measure.x + width + 80 * ui.winScale, measure.y + textOffset * 1.5);
+        ctx.fillText('Cost ' + Game.format(this.cost) + ' EP', measure.x + width + 80 * ui.winScale, measure.y + textOffset * 1.5);
 
         ctx.font = 18 * ui.winScale + 'px Ubuntu';
         ctx.textAlign = 'left';
