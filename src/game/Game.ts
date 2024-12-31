@@ -5,6 +5,7 @@ import Overlay from './components/Overlay';
 import Planet from './components/Planet';
 import PlanetHit from './components/PlanetHit';
 import Rocket from './components/Rocket';
+import Target from './components/Target';
 import Epoch from './Epoch';
 
 export default class Game {
@@ -22,7 +23,8 @@ export default class Game {
     public constructor(
         public readonly app: Application,
         public readonly overlay: Overlay,
-        public readonly planet: Planet
+        public readonly planet: Planet,
+        public readonly target: Target
     ) {
         Game.instance = this;
 

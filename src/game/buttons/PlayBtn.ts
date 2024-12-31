@@ -24,5 +24,6 @@ export default class PlayBtn extends Button {
         const game = Game.instance!;
         game.planet.shootRockets = true;
         game.overlay.scene = Scene.Game;
+        game.target.canClick = true;
     }
 }

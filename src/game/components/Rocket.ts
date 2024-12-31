@@ -136,15 +136,18 @@ export default class Rocket implements Component {
     }
 
     public static spawnOnOrbit(damage: number, speed: number, gravity: number) {
-        const angle = Math.random() * TAU;
+        const game = Game.instance!,
+            angle = game.target.hidden
+                ? Math.random() * TAU
+                : game.target.angle + Math.random() * TAU / 12 - TAU / 12 / 2;
 
         const rocket = new Rocket(
             Math.cos(angle) * 1200,
             Math.sin(angle) * 1200,
-            10, damage, speed, gravity
+            8, damage, speed, gravity
         );
 
-        Game.instance!.app.spawn({ base: rocket, ui: new RocketUI() });
+        game.app.spawn({ base: rocket, ui: new RocketUI() });
 
         return rocket;
     }

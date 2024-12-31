@@ -23,6 +23,7 @@ interface PlanetLayer {
 
 export default class Planet implements Component {
     public static readonly SIZE = 250;
+    public static readonly SIZE_SQUARE = Planet.SIZE * Planet.SIZE;
     public static readonly DEATH_TIME = 0.75;
     public app: Application = null!;
     public scale = 1;

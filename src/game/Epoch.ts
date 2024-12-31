@@ -23,6 +23,7 @@ export default class Epoch {
         game.reset();
         game.overlay.scene = Scene.Epoch;
         game.planet.shootRockets = false;
+        game.target.canClick = false;
 
         if (this.points > 1_000_000) Achievement.unlock('Evolution');
     }

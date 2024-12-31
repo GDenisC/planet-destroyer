@@ -2,8 +2,10 @@ import Application from './Application';
 import Achievement from './game/Achievement';
 import Overlay from './game/components/Overlay';
 import Planet from './game/components/Planet';
+import Target from './game/components/Target';
 import OverlayUI from './game/components/ui/Overlay';
 import PlanetUI from './game/components/ui/Planet';
+import TargetUI from './game/components/ui/Target';
 import Game from './game/Game';
 
 new Achievement('Level 10', ['Reach level 10', 'Easy start'], '+10% rockets speed', g => g.epoch.multipliers.speed *= 1.1);
@@ -17,10 +19,12 @@ const app = new Application();
 
 const overlay = new Overlay();
 const planet = new Planet();
+const target = new Target();
 
-new Game(app, overlay, planet);
+new Game(app, overlay, planet, target);
 
 app.spawn({ base: overlay, ui: new OverlayUI() });
 app.spawn({ base: planet, ui: new PlanetUI() });
+app.spawn({ base: target, ui: new TargetUI() });
 
 app.run();
