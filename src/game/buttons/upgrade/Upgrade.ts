@@ -5,7 +5,7 @@ import Game from '../../Game';
 export default abstract class Upgrade extends Button {
     private readonly initialCost: number;
     protected cachedDescription: string[] = [];
-    public level = 1;
+    public level = 0;
 
     public constructor(public readonly name: string, public cost: number, public readonly maxLevel: number) {
         super('BUY', {
@@ -43,7 +43,7 @@ export default abstract class Upgrade extends Button {
             [16, 16, 0, 0]
         );
         ctx.closePath();
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillStyle = this.cost < Game.instance!.score ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.6)';
         ctx.fill();
 
         ctx.font = 36 * ui.winScale + 'px Ubuntu';

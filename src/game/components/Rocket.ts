@@ -79,7 +79,7 @@ export default class Rocket implements Component {
         if (planet.intersects(this.collider))
             this.collideWithPlanet(game, planet, speed);
 
-        this.trailTimer += dt * time * this.speed;
+        this.trailTimer += dt * time;
 
         if (this.trailTimer > this.trailSpawnAtTime) {
             let cos = Math.cos(this.angle),
@@ -100,8 +100,8 @@ export default class Rocket implements Component {
         // get normal position
 
         do {
-            this.x -= cos * speed / planet.scale;
-            this.y -= sin * speed / planet.scale;
+            this.x -= cos * speed / 2 / planet.scale;
+            this.y -= sin * speed / 2 / planet.scale;
             this.updateCollider();
         } while (planet.intersects(this.collider) && limit-- > 0);
 
