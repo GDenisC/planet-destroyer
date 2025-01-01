@@ -15,25 +15,25 @@ export default [
             size: 12.5, speed: 2, damage: 0.6, gravity: 0.5,
             onSpawn: r => r.penetration = 4,
             flags: RocketFlags.Long
-        }, 5),
+        }, 4),
 
         new RocketBtn({
             offset: 5, dummySize: 11.5,
             size: 20, speed: 0.6, damage: 3,
             flags: RocketFlags.Hammer
-        }, 10),
+        }, 8),
 
         new RocketBtn({
             offset: -3, dummySize: 8,
             size: 8, speed: 1.5, damage: 0.5,
             flags: RocketFlags.Sharp
-        }, 0.05),
+        }, 0.125),
 
         new RocketBtn({
             offset: 6, dummySize: 13,
             size: 60, speed: 0.2, damage: 90, gravity: 0.1,
             flags: RocketFlags.White
-        }, 120)
+        }, 90)
     ],
     // Second layer (elites)
     [
@@ -42,7 +42,7 @@ export default [
             size: 15, speed: 3, damage: 0.4, gravity: 0,
             onSpawn: r => r.penetration = 8,
             flags: RocketFlags.Longer
-        }, 15),
+        }, 12),
 
         new RocketBtn({
             offset: -4, dummySize: 7,
@@ -56,7 +56,7 @@ export default [
             size: 10, speed: 4, damage: 0.3, gravity: 0,
             onSpawn: r => r.penetration = 16,
             flags: RocketFlags.Long | RocketFlags.Longer
-        }, 60)
+        }, 30)
     ],
     /* Third layer (removed elites)
     [
