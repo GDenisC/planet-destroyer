@@ -1,4 +1,5 @@
 import Application from '../Application';
+import Achievement from './Achievement';
 import Decoration from './components/Decoration';
 import Explosion from './components/Explosion';
 import Overlay from './components/Overlay';
@@ -9,15 +10,27 @@ import Target from './components/Target';
 import Epoch from './Epoch';
 
 export default class Game {
+    /** Used in `dev` variable */
+    public static readonly Achievement = Achievement;
+    /** Detects if the user is using a mobile device */
     public static readonly isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    /** Mouse object */
     public static readonly mouse = { x: 0, y: 0, click: false };
+    /** Game instance */
     public static instance: Game | null = null;
+    /** Rockets spawned in the game in the current moment */
     public readonly rockets: Rocket[] = [];
+    /** Hits spawned in the game in the current moment */
     public readonly hits: PlanetHit[] = [];
+    /** Effects spawned in the game in the current moment */
     public readonly explosions: Explosion[] = [];
+    /** Decorations of the planet in the current moment */
     public readonly decorations: Decoration[] = [];
+    /** Game epoch */
     public readonly epoch = new Epoch();
+    /** Current game level */
     public level = 1;
+    /** Current game score */
     public score = 0;
 
     public constructor(
