@@ -36,7 +36,8 @@ export default class Application {
                 y: canvas.cachedHeight / 2,
                 width: canvas.cachedWidth,
                 height: canvas.cachedHeight,
-                winScale: this.window.canvas.windowScale
+                winScale: this.window.canvas.windowScale,
+                dt: this.dt
             };
 
         if (this.shakePower) {

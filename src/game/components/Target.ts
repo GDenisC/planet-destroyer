@@ -5,7 +5,7 @@ import Component from './Component';
 import Planet from './Planet';
 
 export default class Target implements Component {
-    public static readonly ACTIVE_TIME = 1;
+    public static readonly ACTIVE_TIME = 2;
     public x = 0;
     public y = 0;
     public angle = 0;

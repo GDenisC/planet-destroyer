@@ -59,14 +59,49 @@ export default class OverlayUI implements UI {
         ctx.font = 36 * ui.winScale + 'px Ubuntu';
         ctx.fillText('Level ' + game.level, ui.width / 2, 72 * ui.winScale);
 
-        for (let i = 0, l = this.overlay.upgrades.length; i < l; ++i) {
-            let upgrade = this.overlay.upgrades[i];
-            upgrade.options.offsetY = -40;
-            upgrade.options.offsetX = 180 + i * 340;
-            upgrade.render(ctx, ui);
-        }
+        let upgrades = this.overlay.upgrades;
+
+        // upgrades are inlined
+        upgrades[0].options.offsetX = 180;
+        upgrades[0].options.offsetY = -40;
+        upgrades[0].render(ctx, ui);
+
+        upgrades[1].options.offsetX = 180 + 340;
+        upgrades[1].options.offsetY = -40;
+        upgrades[1].render(ctx, ui);
+
+        upgrades[2].options.screenX = 1;
+        upgrades[2].options.offsetX = -180 - 340;
+        upgrades[2].options.offsetY = -40;
+        upgrades[2].render(ctx, ui);
+
+        upgrades[3].options.screenX = 1;
+        upgrades[3].options.offsetX = -180;
+        upgrades[3].options.offsetY = -40;
+        upgrades[3].render(ctx, ui);
 
         this.renderEpochGain(ctx, ui, Epoch.calculateProgress(game.level), game);
+        this.renderRocketButtons(ctx, ui);
+    }
+
+    private renderRocketButtons(ctx: CanvasRenderingContext2D, ui: UIContext) {
+        const buttons = this.overlay.rocketButtons;
+
+        let w = 50+4,
+            h = 50+4,
+            l = buttons.length;
+
+        for (let i = 0; i < l; ++i) {
+            let k = buttons[i].length,
+                fw = w * k;
+
+            for (let j = 0; j < k; ++j) {
+                let button = buttons[i][j];
+                button.options.offsetX = (j+0.5) * w - fw / 2;
+                button.options.offsetY = -(i+1) * h;
+                button.render(ctx, ui);
+            }
+        }
     }
 
     private renderEpochGain(ctx: CanvasRenderingContext2D, ui: UIContext, progress: number, game: Game) {

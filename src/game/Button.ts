@@ -15,7 +15,8 @@ export interface ButtonOptions {
     strokeColor: string,
     overStrokeColor: string,
     pressStrokeColor: string,
-    rounding: number
+    rounding: number,
+    fillStyle: string
 }
 
 export default abstract class Button {
@@ -41,7 +42,8 @@ export default abstract class Button {
             strokeColor: '#fff',
             overStrokeColor: '#fff',
             pressStrokeColor: '#fff',
-            rounding: 0
+            rounding: 0,
+            fillStyle: 'rgba(0,0,0,0.5)'
         }, this.options, options);
     }
 
@@ -65,8 +67,10 @@ export default abstract class Button {
             ctx.stroke();
         }
 
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillStyle = opt.fillStyle
         ctx.fill();
+
+        if (!this.options.fontSize) return;
 
         let img = Button.getTextImageCached(this.text, opt.fontSize * ui.winScale, opt.fontColor);
 

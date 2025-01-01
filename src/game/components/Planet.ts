@@ -61,7 +61,7 @@ export default class Planet implements Component {
             if (this.rocketTime > this.rocketInterval) {
                 let amount = Math.floor(this.rocketTime / this.rocketInterval);
                 for (;amount;--amount) {
-                    Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed * game.epoch.multipliers.speed, this.rocketGravity);
+                    Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed * game.epoch.multipliers.speed, this.rocketGravity, true);
                 }
                 this.rocketTime = 0;
             }
@@ -97,9 +97,18 @@ export default class Planet implements Component {
         if (game.score > 1_000_000) Achievement.unlock('One Million');
 
         switch (game.level) {
+            // achievements
             case 10: Achievement.unlock('Level 10'); break;
             case 1000: Achievement.unlock('Level 1000'); break;
             case 10_000: Achievement.unlock('The End'); break;
+            // achievements with rockets
+            case 3: Achievement.unlock('Rocket 2'); break;
+            case 7: Achievement.unlock('Rocket 3'); break;
+            case 13: Achievement.unlock('Rocket 4'); break;
+            case 23: Achievement.unlock('Rocket 5'); break;
+            case 33: Achievement.unlock('Rocket 6'); break;
+            case 40: Achievement.unlock('Rocket 7'); break;
+            case 47: Achievement.unlock('Rocket 8'); break;
         }
     }
 

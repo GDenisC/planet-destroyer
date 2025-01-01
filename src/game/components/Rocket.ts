@@ -1,7 +1,7 @@
 import Application from '../../Application';
 import Collider from '../Collider';
 import PlanetHitUI from '../components/ui/PlanetHit';
-import RocketUI from '../components/ui/Rocket';
+import RocketUI, { RocketFlags } from '../components/ui/Rocket';
 import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
@@ -34,6 +34,7 @@ export default class Rocket implements Component {
     public penetration = 1;
     public trailTimer = 0;
     public trailSpawnAtTime = 0;
+    public flags = 0;
 
     public constructor(
         public x: number,
@@ -135,9 +136,28 @@ export default class Rocket implements Component {
         this.collider.update({ x: this.x, y: this.y, radius: this.size / scale });
     }
 
-    public static spawnOnOrbit(damage: number, speed: number, gravity: number) {
+    /** Spawn rocket's clone on orbit */
+    public spawnCloneOnOrbit(useTarget: boolean) {
+        const rocket = Rocket.spawnOnOrbit(this.damage, this.speed, this.gravity, useTarget);
+
+        rocket.size = this.size;
+        rocket.penetration = this.penetration;
+        rocket.flags = this.flags;
+
+        return rocket;
+    }
+
+    /** Spawn many rocket's clones */
+    public spawnClones(amount: number, useTarget: boolean) {
+        for (let i = amount + 1; --i;) {
+            this.spawnCloneOnOrbit(useTarget);
+        }
+    }
+
+    /** Spawn rocket on orbit and return */
+    public static spawnOnOrbit(damage: number, speed: number, gravity: number, useTarget: boolean) {
         const game = Game.instance!,
-            angle = game.target.hidden
+            angle = game.target.hidden || !useTarget
                 ? Math.random() * TAU
                 : game.target.angle + Math.random() * TAU / 12 - TAU / 12 / 2;
 

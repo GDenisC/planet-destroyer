@@ -8,6 +8,8 @@ import ScoreMultiplier from '../buttons/epoch/ScoreMultiplier';
 import TimeMultiplier from '../buttons/epoch/TimeMultiplier';
 import NewEpochBtn from '../buttons/NewEpochBtn';
 import PlayBtn from '../buttons/PlayBtn';
+import RocketBtn from '../buttons/rockets/RocketBtn';
+import rocketLayers from '../buttons/rockets/RocketLayers';
 import StartEpochBtn from '../buttons/StartEpochBtn';
 import GravityUpgrade from '../buttons/upgrade/GravityUpgrade';
 import LessIntervalUpgrade from '../buttons/upgrade/LessIntervalUpgrade';
@@ -48,6 +50,8 @@ export default class Overlay implements Component {
         new PenetrationChance(),
         new PlanetResetUpgrade()
     ]
+
+    public readonly rocketButtons: RocketBtn[][] = rocketLayers;
 
     public readonly play = new PlayBtn();
     public readonly newEpoch = new NewEpochBtn();
@@ -96,5 +100,15 @@ export default class Overlay implements Component {
         for (let upgrade of this.upgrades) {
             upgrade.reset();
         }
+    }
+
+    public unlockRocket(layer: number, index: number) {
+        let rocketLayer = this.rocketButtons[layer];
+        if (!rocketLayer) return;
+
+        let rocket = rocketLayer[index];
+        if (!rocket) return;
+
+        rocket.unlocked = true;
     }
 }
