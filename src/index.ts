@@ -19,13 +19,13 @@ new Achievement('The End', ['Reach level 10000', 'At the end of the game'], '`de
 // Rocket Layer 1
 new Achievement('Rocket 2', ['Reach level 3', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(0, 1));
 new Achievement('Rocket 3', ['Reach level 7', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(0, 2));
-new Achievement('Rocket 4', ['Reach level 13', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(0, 3));
-new Achievement('Rocket 5', ['Reach level 23', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(0, 4));
+new Achievement('Rocket 4', ['Reach level 15', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(0, 3));
+new Achievement('Rocket 5', ['Reach level 25', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(0, 4));
 
 // Rocket Layer 2
-new Achievement('Rocket 6', ['Reach level 33', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(1, 0));
-new Achievement('Rocket 7', ['Reach level 40', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(1, 1));
-new Achievement('Rocket 8', ['Reach level 47', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(1, 2));
+new Achievement('Rocket 6', ['Reach level 40', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(1, 0));
+new Achievement('Rocket 7', ['Reach level 60', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(1, 1));
+new Achievement('Rocket 8', ['Reach level 80', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(1, 2));
 
 const app = new Application();
 

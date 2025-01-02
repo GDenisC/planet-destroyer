@@ -104,11 +104,11 @@ export default class Planet implements Component {
             // achievements with rockets
             case 3: Achievement.unlock('Rocket 2'); break;
             case 7: Achievement.unlock('Rocket 3'); break;
-            case 13: Achievement.unlock('Rocket 4'); break;
-            case 23: Achievement.unlock('Rocket 5'); break;
-            case 33: Achievement.unlock('Rocket 6'); break;
-            case 40: Achievement.unlock('Rocket 7'); break;
-            case 47: Achievement.unlock('Rocket 8'); break;
+            case 15: Achievement.unlock('Rocket 4'); break;
+            case 25: Achievement.unlock('Rocket 5'); break;
+            case 40: Achievement.unlock('Rocket 6'); break;
+            case 60: Achievement.unlock('Rocket 7'); break;
+            case 80: Achievement.unlock('Rocket 8'); break;
         }
     }
 
