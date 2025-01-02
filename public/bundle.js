@@ -1518,12 +1518,10 @@
       rocket.unlocked = true;
     }
     onSave(save2) {
-      save2.writeU8(this.scene);
       save2.writeArray(this.upgrades);
       save2.writeArray(this.epochUpgrades);
     }
     onLoad(save2) {
-      this.scene = save2.readU8();
       save2.loadArray(this.upgrades);
       save2.loadArray(this.epochUpgrades);
     }
