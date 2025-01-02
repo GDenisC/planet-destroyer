@@ -1,6 +1,6 @@
 import esbuild from 'esbuild';
 
-const IS_PRODUCTION = false;
+const IS_PRODUCTION = true;
 
 /** @type {import('esbuild').BuildOptions} */
 const config = {
@@ -15,4 +15,4 @@ const config = {
     logLevel: 'info'
 };
 
-esbuild.context(config).then(ctx => ctx.serve({ servedir: 'public', port: 2222 }));
+esbuild.build(config);
