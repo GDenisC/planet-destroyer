@@ -61,10 +61,7 @@ export default class Planet implements Component {
             let rocketInterval = this.getRocketInterval();
 
             if (this.rocketTime > rocketInterval) {
-                let amount = Math.floor(this.rocketTime / rocketInterval);
-                for (;amount;--amount) {
-                    Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed * game.epoch.multipliers.speed, this.rocketGravity, true);
-                }
+                Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed * game.epoch.multipliers.speed, this.rocketGravity, true);
                 this.rocketTime = 0;
             }
         }
@@ -81,12 +78,15 @@ export default class Planet implements Component {
             this.respawn();
     }
 
-    public respawn() {
+    public respawn(fullRespawn = true, giveScore = true) {
         let game = Game.instance!;
-        game.score += Math.pow(50 * game.level, 1.1) * game.epoch.multipliers.score;
-        game.clearAll();
         this.scale *= Math.pow(1.125, 2 / Math.sqrt(this.scale));
+        if (giveScore) game.score += Math.pow(50 * game.level, 1.1) * game.epoch.multipliers.score;
         game.level += Math.round(game.epoch.multipliers.level);
+
+        if (!fullRespawn) return;
+
+        game.clearAll();
         this.updateColliders();
         this.destroyed = false;
         this.deathTime = 0;
@@ -96,7 +96,7 @@ export default class Planet implements Component {
         this.rocketTime = this.rocketInterval;
 
         // lets check it only when planet is destroyed
-        if (game.score > 1_000_000) Achievement.unlock('One Million');
+        if (giveScore && game.score > 1_000_000) Achievement.unlock('One Million');
 
         switch (game.level) {
             // achievements
@@ -236,5 +236,12 @@ export default class Planet implements Component {
 
     public getRocketInterval(): number {
         return this.rocketInterval * Game.instance!.epoch.multipliers.interval;
+    }
+
+    public postLoad(level: number) {
+        for (let i = 0; i < level - 1; ++i){
+            this.respawn(false, false);
+        }
+        this.respawn(true, false);
     }
 }

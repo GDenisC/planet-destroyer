@@ -7,6 +7,7 @@ import OverlayUI from './game/components/ui/Overlay';
 import PlanetUI from './game/components/ui/Planet';
 import TargetUI from './game/components/ui/Target';
 import Game from './game/Game';
+import { Save } from './game/saves';
 
 // Achievements
 new Achievement('Level 10', ['Reach level 10', 'Easy start'], '+10% rockets speed', g => g.epoch.multipliers.speed *= 1.1);
@@ -33,10 +34,23 @@ const overlay = new Overlay();
 const planet = new Planet();
 const target = new Target();
 
-new Game(app, overlay, planet, target);
+const game = new Game(app, overlay, planet, target);
 
 app.spawn({ base: overlay, ui: new OverlayUI() });
 app.spawn({ base: planet, ui: new PlanetUI() });
 app.spawn({ base: target, ui: new TargetUI() });
+
+const save = Save.fromLocalStorage();
+
+if (save) {
+    try {
+        save.load(game);
+    } catch (e: any) {
+        if (e.message.includes('Invalid'))
+            alert(e.message);
+        else
+            console.error(e);
+    }
+}
 
 app.run();

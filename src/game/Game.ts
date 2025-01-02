@@ -8,8 +8,9 @@ import PlanetHit from './components/PlanetHit';
 import Rocket from './components/Rocket';
 import Target from './components/Target';
 import Epoch from './Epoch';
+import { ISave, Save } from './saves';
 
-export default class Game {
+export default class Game implements ISave {
     /** Detects if the user is using a mobile device */
     public static readonly isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     /** Mouse object */
@@ -53,6 +54,39 @@ export default class Game {
             window.addEventListener('mouseup', this.onMouseEnd.bind(this));
             window.addEventListener('mousemove', this.onMouseMove.bind(this));
         }
+
+        window.addEventListener('beforeunload', () => {
+            const save = new Save();
+            save.write(this);
+            save.toLocalStorage();
+        });
+    }
+
+    public onSave(save: Save): void {
+        save.writeU8(Save.VERSION);
+        save.writeU32(this.level);
+        save.writeF64(this.score);
+        // dont save the planet
+        save.write(this.overlay);
+        save.write(this.epoch);
+        save.writeArray(Achievement.all);
+    }
+
+    public onLoad(save: Save): void {
+        if (save.readU8() != Save.VERSION) {
+            if (prompt('This save is from an older version of the game. Do you want to delete it (yes/no)?') != 'yes')
+                return;
+        }
+        let level = save.readU32();
+        this.score = save.readF64();
+        save.load(this.overlay);
+        save.load(this.epoch);
+        // epoch challenge gives 1 more level per restart
+        this.planet.postLoad(level);
+        this.level -= 1;
+        // epoch cost multiplier exists
+        this.overlay.postLoad();
+        save.loadArray(Achievement.all);
     }
 
     private setMousePosition(x: number, y: number) {

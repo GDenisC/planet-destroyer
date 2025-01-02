@@ -112,6 +112,12 @@ export default class Rocket implements Component {
             this.updateCollider();
         }
 
+        // wtf happened
+        if (this.x > 1e9 || this.y > 1e9) {
+            this.x = 0;
+            this.y = 0;
+        }
+
         // explosion
 
         let dist = Math.sqrt(this.x * this.x + this.y * this.y) + 1, // + 1 is NaN Fix

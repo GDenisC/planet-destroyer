@@ -1,8 +1,9 @@
 import Button from '../../Button';
 import { UIContext } from '../../components/ui/UI';
 import Game from '../../Game';
+import { ISave, Save } from '../../saves';
 
-export default abstract class Upgrade extends Button {
+export default abstract class Upgrade extends Button implements ISave {
     private readonly initialCost: number;
     protected cachedDescription: string[] = [];
     public level = 0;
@@ -86,4 +87,17 @@ export default abstract class Upgrade extends Button {
 
     public abstract onPurchase(game: Game): void;
     public abstract getDescription(): string[];
+
+    public purchaseMany(game: Game, count: number) {
+        for (let i = 0; i < count; ++i)
+            this.onPurchase(game);
+    }
+
+    public onSave(save: Save): void {
+        save.writeU8(this.level);
+    }
+
+    public onLoad(save: Save): void {
+        this.level = save.readU8();
+    }
 }

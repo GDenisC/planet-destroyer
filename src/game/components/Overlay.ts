@@ -23,6 +23,7 @@ import Upgrade from '../buttons/upgrade/Upgrade';
 import Entity from '../Entity';
 import Game from '../Game';
 import { Order } from '../Order';
+import { ISave, Save } from '../saves';
 import Component from './Component';
 
 export const enum Scene {
@@ -32,7 +33,7 @@ export const enum Scene {
     Challenges
 }
 
-export default class Overlay implements Component {
+export default class Overlay implements Component, ISave {
     public static readonly ACHIEVEMENT_TIME = 5;
     private readonly achievementsStack: Achievement[] = [];
     private achievementTimer = 0;
@@ -125,5 +126,25 @@ export default class Overlay implements Component {
         if (!rocket) return;
 
         rocket.unlocked = true;
+    }
+
+    public onSave(save: Save): void {
+        save.writeArray(this.upgrades);
+        save.writeArray(this.epochUpgrades);
+        // dont save rocketLayers
+    }
+
+    public onLoad(save: Save): void {
+        save.loadArray(this.upgrades);
+        save.loadArray(this.epochUpgrades);
+    }
+
+    public postLoad() {
+        for (let upgrade of this.upgrades) {
+            upgrade.purchaseMany(Game.instance!, upgrade.level);
+        }
+        for (let upgrade of this.epochUpgrades) {
+            upgrade.purchaseMany(Game.instance!, upgrade.level);
+        }
     }
 }

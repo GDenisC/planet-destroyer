@@ -5,8 +5,9 @@ import EpochChallenge from './challenges/EpochChallenge';
 import OfflineChallenge from './challenges/OfflineChallenge';
 import { Scene } from './components/Overlay';
 import Game from './Game';
+import { ISave, Save } from './saves';
 
-export default class Epoch {
+export default class Epoch implements ISave {
     public static readonly EPOCH_LEVEL = 100;
 
     public readonly challenges: Challenge[] = [
@@ -53,5 +54,23 @@ export default class Epoch {
 
     public calculateProgress(level: number): number {
         return Math.min(1, level / Epoch.EPOCH_LEVEL * this.multipliers.epoch);
+    }
+
+    public onSave(save: Save): void {
+        save.writeU32(this.count);
+        save.writeF64(this.points);
+        save.writeArray(this.challenges);
+        // 0 if no current challenge
+        save.writeU8(this.currentChallenge ? this.challenges.indexOf(this.currentChallenge) + 1 : 0);
+        // dont save multipliers
+    }
+
+    public onLoad(save: Save): void {
+        this.count = save.readU32();
+        this.points = save.readF64();
+        save.loadArray(this.challenges);
+        let challengeIndex = save.readU8() - 1;
+        if (challengeIndex > -1)
+            this.currentChallenge = this.challenges[challengeIndex];
     }
 }

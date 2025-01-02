@@ -1,8 +1,9 @@
 import Button from '../../Button';
 import { UIContext } from '../../components/ui/UI';
 import Game from '../../Game';
+import { ISave, Save } from '../../saves';
 
-export default abstract class EpochUpgrade extends Button {
+export default abstract class EpochUpgrade extends Button implements ISave {
     public level = 0;
 
     public constructor(public readonly name: string, text: string, public cost: number) {
@@ -69,4 +70,17 @@ export default abstract class EpochUpgrade extends Button {
 
     public abstract onPurchase(game: Game): void;
     public abstract getDescription(): string;
+
+    public purchaseMany(game: Game, count: number) {
+        for (let i = 0; i < count; ++i)
+            this.onPurchase(game);
+    }
+
+    public onSave(save: Save): void {
+        save.writeU8(this.level);
+    }
+
+    public onLoad(save: Save): void {
+        this.level = save.readU8();
+    }
 }
