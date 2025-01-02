@@ -1,4 +1,7 @@
 import Achievement from '../Achievement';
+import ChallengeBtn from '../buttons/ChallengeBtn';
+import ChallengesBtn from '../buttons/ChallengesBtn';
+import EndChallengeBtn from '../buttons/EndChallengeBtn';
 import CostMultiplier from '../buttons/epoch/CostMultiplier';
 import EpochUpgrade from '../buttons/epoch/EpochUpgrade';
 import PenetrationChance from '../buttons/epoch/PenetrationChance';
@@ -6,6 +9,7 @@ import PlanetResetUpgrade from '../buttons/epoch/PlanetResetUpgrade';
 import PowerMultiplier from '../buttons/epoch/PowerMultiplier';
 import ScoreMultiplier from '../buttons/epoch/ScoreMultiplier';
 import TimeMultiplier from '../buttons/epoch/TimeMultiplier';
+import EpochBtn from '../buttons/EpochBtn';
 import NewEpochBtn from '../buttons/NewEpochBtn';
 import PlayBtn from '../buttons/PlayBtn';
 import RocketBtn from '../buttons/rockets/RocketBtn';
@@ -17,13 +21,15 @@ import PowerUpgrade from '../buttons/upgrade/PowerUpgrade';
 import SpeedUpgrade from '../buttons/upgrade/SpeedUpgrade';
 import Upgrade from '../buttons/upgrade/Upgrade';
 import Entity from '../Entity';
+import Game from '../Game';
 import { Order } from '../Order';
 import Component from './Component';
 
 export const enum Scene {
     Menu,
     Game,
-    Epoch
+    Epoch,
+    Challenges
 }
 
 export default class Overlay implements Component {
@@ -49,13 +55,19 @@ export default class Overlay implements Component {
         new TimeMultiplier(),
         new PenetrationChance(),
         new PlanetResetUpgrade()
-    ]
+    ];
+
+    public challengeButtons: ChallengeBtn[] = null!;
 
     public readonly rocketButtons: RocketBtn[][] = rocketLayers;
+    public rocketButtonsEnabled = true;
 
     public readonly play = new PlayBtn();
     public readonly newEpoch = new NewEpochBtn();
     public readonly startEpoch = new StartEpochBtn();
+    public readonly challenges = new ChallengesBtn();
+    public readonly epoch = new EpochBtn();
+    public readonly endChallenge = new EndChallengeBtn();
 
     public constructor() {
         this.logoImage = new Image();
@@ -64,6 +76,7 @@ export default class Overlay implements Component {
 
     public init(entity: Entity) {
         entity.zOrder = Order.Overlay;
+        this.challengeButtons = Game.instance!.epoch.challenges.map(challenge => new ChallengeBtn(challenge));
         this.entity = entity;
     }
 
@@ -93,7 +106,9 @@ export default class Overlay implements Component {
     /** https://www.desmos.com/Calculator/9th1u5gtpl */
     public achievementAlpha() {
         if (!this.nextAchievementAt) return 0;
-        return Math.min(1, this.achievementTimer / 0.1 / this.nextAchievementAt) - Math.max(0, (this.achievementTimer - this.nextAchievementAt * 0.9) / 0.1 / this.nextAchievementAt);
+
+        return Math.min(1, this.achievementTimer / 0.1 / this.nextAchievementAt)
+            - Math.max(0, (this.achievementTimer - this.nextAchievementAt * 0.9) / 0.1 / this.nextAchievementAt);
     }
 
     public resetUpgrades() {

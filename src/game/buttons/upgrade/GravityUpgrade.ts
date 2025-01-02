@@ -8,7 +8,7 @@ export default class GravityUpgrade extends Upgrade {
 
     public onPurchase(game: Game): void {
         game.planet.rocketGravity += 0.2;
-        this.cost += this.cost / 4 * game.epoch.multipliers.cost;
+        this.cost += this.cost / 3 * game.epoch.multipliers.cost;
     }
 
     public getDescription(): string[] {

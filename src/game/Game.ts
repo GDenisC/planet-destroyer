@@ -10,14 +10,14 @@ import Target from './components/Target';
 import Epoch from './Epoch';
 
 export default class Game {
-    /** Used in `dev` variable */
-    public static readonly Achievement = Achievement;
     /** Detects if the user is using a mobile device */
     public static readonly isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     /** Mouse object */
     public static readonly mouse = { x: 0, y: 0, click: false };
     /** Game instance */
     public static instance: Game | null = null;
+    /** Used in `dev` variable */
+    public readonly Achievement = Achievement;
     /** Rockets spawned in the game in the current moment */
     public readonly rockets: Rocket[] = [];
     /** Hits spawned in the game in the current moment */
@@ -29,7 +29,7 @@ export default class Game {
     /** Game epoch */
     public readonly epoch = new Epoch();
     /** Current game level */
-    public level = 1;
+    public level;
     /** Current game score */
     public score = 0;
 
@@ -40,6 +40,8 @@ export default class Game {
         public readonly target: Target
     ) {
         Game.instance = this;
+
+        this.level = Math.round(this.epoch.multipliers.level);
 
         if (Game.isMobile) {
             window.addEventListener('touchstart', this.onTouchStart.bind(this));
@@ -128,7 +130,7 @@ export default class Game {
 
     public reset() {
         this.score = 0;
-        this.level = 1;
+        this.level = Math.round(this.epoch.multipliers.level);
         this.clearAll();
         this.planet.reset();
         this.overlay.resetUpgrades();

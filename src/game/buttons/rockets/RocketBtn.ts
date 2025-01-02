@@ -25,7 +25,7 @@ export default class RocketBtn extends Button {
 
     public constructor(
         private readonly config: RocketDummy & RocketConfig,
-        private readonly reloadTime = 1,
+        public reloadTime = 1,
         public unlocked = false
     ) {
         super('', {
@@ -90,7 +90,7 @@ export default class RocketBtn extends Button {
             planet = game.planet,
             rocket = Rocket.spawnOnOrbit(
                 planet.rocketPower * this.config.damage,
-                planet.rocketSpeed * (this.config.speed || 1),
+                planet.rocketSpeed * (this.config.speed || 1) * game.epoch.multipliers.speed,
                 planet.rocketGravity * (this.config.gravity || 1),
                 true
             );

@@ -58,8 +58,10 @@ export default class Planet implements Component {
         if (this.shootRockets) {
             this.rocketTime += dt * time;
 
-            if (this.rocketTime > this.rocketInterval) {
-                let amount = Math.floor(this.rocketTime / this.rocketInterval);
+            let rocketInterval = this.getRocketInterval();
+
+            if (this.rocketTime > rocketInterval) {
+                let amount = Math.floor(this.rocketTime / rocketInterval);
                 for (;amount;--amount) {
                     Rocket.spawnOnOrbit(this.rocketPower, this.rocketSpeed * game.epoch.multipliers.speed, this.rocketGravity, true);
                 }
@@ -84,7 +86,7 @@ export default class Planet implements Component {
         game.score += Math.pow(50 * game.level, 1.1) * game.epoch.multipliers.score;
         game.clearAll();
         this.scale *= Math.pow(1.125, 2 / Math.sqrt(this.scale));
-        game.level += 1;
+        game.level += Math.round(game.epoch.multipliers.level);
         this.updateColliders();
         this.destroyed = false;
         this.deathTime = 0;
@@ -100,7 +102,7 @@ export default class Planet implements Component {
             // achievements
             case 10: Achievement.unlock('Level 10'); break;
             case 1000: Achievement.unlock('Level 1000'); break;
-            case 10_000: Achievement.unlock('The End'); break;
+            case 10000: Achievement.unlock('The End'); break;
             // achievements with rockets
             case 3: Achievement.unlock('Rocket 2'); break;
             case 7: Achievement.unlock('Rocket 3'); break;
@@ -230,5 +232,9 @@ export default class Planet implements Component {
         this.updateColliders();
         this.updatePalette();
         this.spawnDecorations();
+    }
+
+    public getRocketInterval(): number {
+        return this.rocketInterval * Game.instance!.epoch.multipliers.interval;
     }
 }

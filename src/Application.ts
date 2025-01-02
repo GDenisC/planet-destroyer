@@ -5,7 +5,7 @@ import Entity from './game/Entity';
 import Window from './Window';
 
 export default class Application {
-    public static readonly now: () => number = 'performance' in window && 'now' in performance ? performance.now.bind(performance) : Date.now();
+    public static readonly now = 'performance' in window && 'now' in performance ? performance.now.bind(performance) : Date.now;
     public readonly window = new Window();
     public entities = new Set<Entity<{ base?: Component, ui?: UI }>>();
     public dt = 0.0001; // 0 may cause NaN

@@ -44,7 +44,7 @@ export default abstract class Button {
             pressStrokeColor: '#fff',
             rounding: 0,
             fillStyle: 'rgba(0,0,0,0.5)'
-        }, this.options, options);
+        }, options);
     }
 
     public abstract onClick(): void;

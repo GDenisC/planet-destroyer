@@ -14,7 +14,7 @@ new Achievement('One Million', ['Reach 1.000.000 score', ''], '+10% score', g =>
 new Achievement('First Epoch', ['Get your first epoch', 'Prestige at level 100+'], '4x reset speed', g => g.epoch.multipliers.reset /= 4);
 new Achievement('Level 1000', ['Reach level 1000', ''], '+50% rockets power', g => g.epoch.multipliers.power += 0.5);
 new Achievement('Evolution', ['Reach 1.000.000 EP', ''], '2x EP gain', g => g.epoch.multipliers.epoch *= 2);
-new Achievement('The End', ['Reach level 10000', 'At the end of the game'], '`dev` variable unlocked in console', g => window['dev'] = g);
+new Achievement('The End', ['Reach level 10000', 'At the end of the game'], '`dev` variable unlocked in console', g => (window as any)['dev'] = g);
 
 // Rocket Layer 1
 new Achievement('Rocket 2', ['Reach level 3', ''], 'Unlock new rocket', g => g.overlay.unlockRocket(0, 1));

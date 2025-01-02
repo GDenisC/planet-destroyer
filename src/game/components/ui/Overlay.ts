@@ -22,6 +22,9 @@ export default class OverlayUI implements UI {
             case Scene.Epoch:
                 this.renderEpoch(ctx, ui);
                 break;
+            case Scene.Challenges:
+                this.renderChallenges(ctx, ui);
+                break;
         }
         this.renderAchievement(ctx, ui);
     }
@@ -80,11 +83,15 @@ export default class OverlayUI implements UI {
         upgrades[3].options.offsetY = -40;
         upgrades[3].render(ctx, ui);
 
-        this.renderEpochGain(ctx, ui, Epoch.calculateProgress(game.level), game);
+        this.renderEpochGain(ctx, ui, game.epoch.calculateProgress(game.level), game);
         this.renderRocketButtons(ctx, ui);
+
+        if (game.epoch.isInChallenge()) this.overlay.endChallenge.render(ctx, ui);
     }
 
     private renderRocketButtons(ctx: CanvasRenderingContext2D, ui: UIContext) {
+        if (!this.overlay.rocketButtonsEnabled) return;
+
         const buttons = this.overlay.rocketButtons;
 
         let w = 80+4,
@@ -151,6 +158,30 @@ export default class OverlayUI implements UI {
         }
 
         this.overlay.startEpoch.render(ctx, ui);
+        this.overlay.challenges.render(ctx, ui);
+    }
+
+    private renderChallenges(ctx: CanvasRenderingContext2D, ui: UIContext) {
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillRect(0, 0, ui.width, ui.height);
+
+        ctx.font = 36 * ui.winScale + 'px Ubuntu';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgb(255, 55, 55)';
+        ctx.fillText('Challenges', ui.width / 2, 36 * ui.winScale);
+
+        ctx.font = 24 * ui.winScale + 'px Ubuntu';
+        ctx.fillStyle = 'rgb(194, 43, 43)';
+        ctx.fillText('To complete the challenge you need to start new epoch', ui.width / 2, (36 + 24 + 4) * ui.winScale );
+
+        for (let i = 0, l = this.overlay.challengeButtons.length; i < l; ++i) {
+            let btn = this.overlay.challengeButtons[i];
+            btn.options.offsetY = 130 * (i + 1);
+            btn.render(ctx, ui);
+        }
+
+        this.overlay.epoch.render(ctx, ui);
     }
 
     private renderAchievement(ctx: CanvasRenderingContext2D, ui: UIContext) {
