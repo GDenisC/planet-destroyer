@@ -73,6 +73,10 @@ export default abstract class Challenge implements ISave {
         }
         this.completed = save.readBoolean();
         if (this.completed) this.completedTime = save.readF64();
-        if (save.readBoolean()) this.startTime = save.readF64();
+        if (save.readBoolean()) {
+            // the challenge is active
+            this.startTime = save.readF64();
+            this.onStart(Game.instance!);
+        }
     }
 }

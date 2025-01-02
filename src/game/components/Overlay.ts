@@ -129,12 +129,14 @@ export default class Overlay implements Component, ISave {
     }
 
     public onSave(save: Save): void {
+        save.writeU8(this.scene);
         save.writeArray(this.upgrades);
         save.writeArray(this.epochUpgrades);
         // dont save rocketLayers
     }
 
     public onLoad(save: Save): void {
+        this.scene = save.readU8();
         save.loadArray(this.upgrades);
         save.loadArray(this.epochUpgrades);
     }

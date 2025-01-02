@@ -1,7 +1,7 @@
 import { ISave } from './ISave';
 
 export class Save {
-    public static readonly VERSION = 0;
+    public static readonly VERSION = 1;
     public static readonly INITIAL_SIZE = 0xFFFF;
     public static readonly LITTLE_ENDIAN = true;
     private dataview: DataView;
