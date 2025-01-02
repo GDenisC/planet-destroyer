@@ -7,5 +7,25 @@
     <script src="bundle.js" defer></script>
 </head>
 <body>
+    <!-- Shouldn't run at main thread -->
+    <script async> 
+        addEventListener("click", () => {
+            if (!document.fullscreenElement) return;
+            
+            document.documentElement.requestFullscreen({
+                navigationUI: "hide" /** Handle notch on mobile **/
+            });
+        });
+
+        /** Chromium **/
+
+        addEventListener("touchstart", () => {
+            if (!document.fullscreenElement) return;
+            
+            document.documentElement.requestFullscreen({
+                navigationUI: "hide" /** Handle notch on mobile **/
+            });
+        });
+    </script>
 </body>
 </html>
