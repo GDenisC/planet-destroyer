@@ -31,8 +31,8 @@ export default class RocketBtn extends Button {
         super('', {
             screenX: 0.5,
             screenY: 1,
-            width: 50,
-            height: 50
+            width: 80,
+            height: 80
         });
     }
 
@@ -60,7 +60,7 @@ export default class RocketBtn extends Button {
         ctx.fill();
 
         if (!this.unlocked) {
-            ctx.font = 32 * ui.winScale + 'px Ubuntu';
+            ctx.font = 52 * ui.winScale + 'px Ubuntu';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#333';
@@ -68,11 +68,13 @@ export default class RocketBtn extends Button {
             return;
         }
 
+        const scale = 1.5;
+
         RocketUI.renderDummy(
             ctx,
-            this.config.dummySize * ui.winScale,
-            measure.x + measure.w / 2 + this.config.offset * ui.winScale * cos,
-            measure.y + measure.h / 2 + this.config.offset * ui.winScale * sin,
+            this.config.dummySize * ui.winScale * scale,
+            measure.x + measure.w / 2 + this.config.offset * ui.winScale * cos * scale,
+            measure.y + measure.h / 2 + this.config.offset * ui.winScale * sin * scale,
             this.rotation,
             this.config.flags
         );

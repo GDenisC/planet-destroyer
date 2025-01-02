@@ -72,9 +72,9 @@ export default class Game {
         this.onMouseMove(e);
     }
 
-    private onTouchStart(_: TouchEvent) {
+    private onTouchStart(e: TouchEvent) {
         Game.mouse.click = true;
-        //this.onTouchMove(e);
+        this.onTouchMove(e);
     }
 
     private onTouchMove(e: TouchEvent) {

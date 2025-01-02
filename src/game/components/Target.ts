@@ -27,7 +27,7 @@ export default class Target implements Component {
         let mx = mouse.x - canvas.cachedWidth / 2,
             my = mouse.y - canvas.cachedHeight / 2;
 
-        if (mx * mx + my * my < Planet.SIZE_SQUARE * 2) {
+        if (mx * mx + my * my < Planet.SIZE_SQUARE * canvas.windowScale * canvas.windowScale) {
             game.app.setCursorStyle(CursorStyle.Pointer);
             if (mouse.click && !this.holding) {
                 this.x = mouse.x;

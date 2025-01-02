@@ -87,8 +87,8 @@ export default class OverlayUI implements UI {
     private renderRocketButtons(ctx: CanvasRenderingContext2D, ui: UIContext) {
         const buttons = this.overlay.rocketButtons;
 
-        let w = 50+4,
-            h = 50+4,
+        let w = 80+4,
+            h = 80+4,
             l = buttons.length;
 
         for (let i = 0; i < l; ++i) {
@@ -98,7 +98,7 @@ export default class OverlayUI implements UI {
             for (let j = 0; j < k; ++j) {
                 let button = buttons[i][j];
                 button.options.offsetX = (j+0.5) * w - fw / 2;
-                button.options.offsetY = -(i+1) * h;
+                button.options.offsetY = -(i+0.75) * h;
                 button.render(ctx, ui);
             }
         }
