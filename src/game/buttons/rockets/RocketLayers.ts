@@ -56,7 +56,7 @@ export default [
             size: 10, speed: 4, damage: 0.3, gravity: 0,
             onSpawn: r => r.penetration = 16,
             flags: RocketFlags.Long | RocketFlags.Longer
-        }, 30)
+        }, 15)
     ],
     /* Third layer (removed elites)
     [
