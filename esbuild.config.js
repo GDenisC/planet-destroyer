@@ -7,7 +7,7 @@ const config = {
     entryPoints: ['src/index.ts'],
     outfile: 'public/bundle.js',
     bundle: true,
-    minify: IS_PRODUCTION,
+    minify: false,//IS_PRODUCTION,
     sourcemap: IS_PRODUCTION ? 'external' : 'linked', // save sourcemap on production to check errors
     target: 'es2020',
     format: 'iife',
