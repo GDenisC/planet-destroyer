@@ -109,6 +109,12 @@ export default class Game implements ISave {
     }
 
     private onTouchStart(e: TouchEvent) {
+        if (!document.fullscreenElement) return;
+
+        document.documentElement.requestFullscreen({
+            navigationUI: "hide" // handle notch on mobile
+        });
+
         Game.mouse.click = true;
         this.onTouchMove(e);
     }
